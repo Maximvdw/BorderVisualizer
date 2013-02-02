@@ -1,0 +1,9 @@
+name: BorderVisualizer
+main: VdW.Maxim.BorderVisualizer.BorderVisualizer
+version: 1.0.0
+website: http://dev.bukkit.org/server-mods/BorderVisualizer/
+author: Maximvdw
+description: Visualize borders of Towny,WorldGuard or chunks
+commands:
+  bv:
+    description: Get help with the plugin
