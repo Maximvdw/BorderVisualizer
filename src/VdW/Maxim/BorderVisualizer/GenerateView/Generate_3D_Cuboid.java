@@ -15,6 +15,10 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
+import VdW.Maxim.BorderVisualizer.Configuration.Config;
+import VdW.Maxim.BorderVisualizer.Locale.Messages;
+import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
+import VdW.Maxim.BorderVisualizer.UserInterface.SendGame;
 
 public class Generate_3D_Cuboid {
 	/* Get the plugin information from the main class */
@@ -40,64 +44,82 @@ public class Generate_3D_Cuboid {
 			ignore[6] = false;
 		}
 
-		// Run the render on a diffrent thread
-		plugin.getServer().getScheduler()
-				.runTaskAsynchronously(plugin, new Runnable() {
-					public void run() {
-						// Get the world of the player
-						World world = player.getWorld();
+		// Check distance
+		int x_distance = Math.abs((int) player.getLocation().getX() - x);
+		int z_distance = Math.abs((int) player.getLocation().getZ() - z);
 
-						// Define the six corners
-						Location corner1;
-						Location corner2;
-						Location corner3;
-						Location corner4;
-						Location corner5;
-						Location corner6;
+		/* DEBUG LOGGING */
+		if (Config.debugMode == true) {
+			SendConsole.info("Distance X: " + x_distance);
+			SendConsole.info("Distance Z: " + z_distance);
+		}
 
-						double i = 0;
-						double j = 0;
-						double k = 0;
-						for (i = 0; i <= x_size; i++) {
+		if (x_distance < 500 && z_distance < 500) {
+			// Run the render on a diffrent thread
+			plugin.getServer().getScheduler()
+					.runTaskAsynchronously(plugin, new Runnable() {
+						public void run() {
+							// Get the world of the player
+							World world = player.getWorld();
+
+							// Define the six corners
+							Location corner1;
+							Location corner2;
+							Location corner3;
+							Location corner4;
+							Location corner5;
+							Location corner6;
+
+							double i = 0;
+							double j = 0;
+							double k = 0;
+							for (i = 0; i <= x_size; i++) {
+								for (j = 0; j <= y_size; j++) {
+									corner1 = new Location(world, i + x, j + y,
+											z);
+									corner2 = new Location(world, i + x, j + y,
+											z + z_size);
+									if (corner1.getBlock().getType() == Material.AIR)
+										player.sendBlockChange(corner1, block,
+												(byte) 0);
+									if (corner2.getBlock().getType() == Material.AIR)
+										player.sendBlockChange(corner2, block,
+												(byte) 0);
+								}
+							}
 							for (j = 0; j <= y_size; j++) {
-								corner1 = new Location(world, i + x, j + y, z);
-								corner2 = new Location(world, i + x, j + y, z
-										+ z_size);
-								if (corner1.getBlock().getType() == Material.AIR)
-									player.sendBlockChange(corner1, block,
-											(byte) 0);
-								if (corner2.getBlock().getType() == Material.AIR)
-									player.sendBlockChange(corner2, block,
-											(byte) 0);
+								for (k = 0; k <= z_size; k++) {
+									corner3 = new Location(world, x, j + y, z
+											+ k);
+									corner4 = new Location(world, x_size + x, j
+											+ y, z + k);
+									if (corner3.getBlock().getType() == Material.AIR)
+										player.sendBlockChange(corner3, block,
+												(byte) 0);
+									if (corner4.getBlock().getType() == Material.AIR)
+										player.sendBlockChange(corner4, block,
+												(byte) 0);
+								}
+							}
+							for (i = 0; i <= x_size; i++) {
+								for (k = 0; k <= z_size; k++) {
+									corner5 = new Location(world, x + i, y, z
+											+ k);
+									corner6 = new Location(world, x + i, y
+											+ y_size, z + k);
+									if (corner5.getBlock().getType() == Material.AIR)
+										player.sendBlockChange(corner5, block,
+												(byte) 0);
+									if (corner6.getBlock().getType() == Material.AIR)
+										player.sendBlockChange(corner6, block,
+												(byte) 0);
+								}
 							}
 						}
-						for (j = 0; j <= y_size; j++) {
-							for (k = 0; k <= z_size; k++) {
-								corner3 = new Location(world, x, j + y, z + k);
-								corner4 = new Location(world, x_size + x,
-										j + y, z + k);
-								if (corner3.getBlock().getType() == Material.AIR)
-									player.sendBlockChange(corner3, block,
-											(byte) 0);
-								if (corner4.getBlock().getType() == Material.AIR)
-									player.sendBlockChange(corner4, block,
-											(byte) 0);
-							}
-						}
-						for (i = 0; i <= x_size; i++) {
-							for (k = 0; k <= z_size; k++) {
-								corner5 = new Location(world, x + i, y, z + k);
-								corner6 = new Location(world, x + i,
-										y + y_size, z + k);
-								if (corner5.getBlock().getType() == Material.AIR)
-									player.sendBlockChange(corner5, block,
-											(byte) 0);
-								if (corner6.getBlock().getType() == Material.AIR)
-									player.sendBlockChange(corner6, block,
-											(byte) 0);
-							}
-						}
-					}
-				});
+					});
+		}else{
+			// Send message
+			SendGame.sendMessage(Messages.error_view_distance, player);
+		}
 	}
 }

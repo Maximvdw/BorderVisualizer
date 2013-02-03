@@ -45,9 +45,6 @@ public class Visualize_WorldGuard_Region {
 		}
 		// Save the player's location
 		Location location = player.getLocation();
-		BorderVisualizer.bv_players_worldguard_region.add(player);
-		BorderVisualizer.bv_regionName_worldguard_region.add(regionName);
-		BorderVisualizer.bv_locations_worldguard_region.add(location);
 
 		// Get World
 		World world = location.getWorld();
@@ -88,20 +85,22 @@ public class Visualize_WorldGuard_Region {
 				SendConsole.info("Visualization data: RegionID=" + id);
 				SendConsole.info("Visualization data: MaxPoint=" + l1);
 				SendConsole.info("Visualization data: MinPoint=" + l0);
-				SendConsole.info("Visualization data: Itteration=" + x_size
-						* y_size * z_size);
 			}
 
-			if (tn.equalsIgnoreCase("cuboid")) { /*
-												 * Cubiod region?
-												 */
+			if (tn.equalsIgnoreCase("cuboid")) {
 				// Generate the 3D cuboid
-				Material block = Material.GLASS; // Block to
-													// replace
-													// it with
+				
+				// Block to replace the cuboid
+				Material block = Material.GLASS;
+				
 				Generate_3D_Cuboid generator = new Generate_3D_Cuboid(plugin);
 				generator.generate(player, x, y, z, x_size, y_size, z_size,
 						block, null);
+				
+				// Save data
+				BorderVisualizer.bv_players_worldguard_region.add(player);
+				BorderVisualizer.bv_regionName_worldguard_region.add(regionName);
+				BorderVisualizer.bv_locations_worldguard_region.add(location);
 
 				// Send Message
 				SendGame.sendMessage(
@@ -112,12 +111,6 @@ public class Visualize_WorldGuard_Region {
 				SendGame.sendMessage(Messages.error_wg_notsupported, player);
 			}
 		} else {
-			// Remove the saved data
-			int index = BorderVisualizer.bv_players_worldguard_region
-					.indexOf(player);
-			BorderVisualizer.bv_players_worldguard_region.remove(player);
-			BorderVisualizer.bv_regionName_worldguard_region.remove(index);
-			BorderVisualizer.bv_locations_worldguard_region.remove(index);
 			// Send message
 			SendGame.sendMessage(
 					Messages.error_nolocation.replace("{VIEW}", "region"),
@@ -189,11 +182,9 @@ public class Visualize_WorldGuard_Region {
 			SendConsole.info("Visualization data: RegionID=" + id);
 			SendConsole.info("Visualization data: MaxPoint=" + l1);
 			SendConsole.info("Visualization data: MinPoint=" + l0);
-			SendConsole.info("Visualization data: Itteration=" + x_size
-					* y_size * z_size);
 		}
 
-		if (tn.equalsIgnoreCase("cuboid")) { /* Cubiod region? */
+		if (tn.equalsIgnoreCase("cuboid")) {
 			// Generate the 3D cuboid
 			Material block = Material.AIR; // Block to replace
 											// it with

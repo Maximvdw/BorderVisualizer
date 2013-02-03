@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -22,7 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.palmergames.bukkit.towny.Towny;
 
-import VdW.Maxim.BorderVisualizer.CommandListener.CommandListener_General;
+import VdW.Maxim.BorderVisualizer.CommandListener.CommandListener;
 import VdW.Maxim.BorderVisualizer.Configuration.BorderVisualizerConfiguration;
 import VdW.Maxim.BorderVisualizer.Configuration.Config;
 import VdW.Maxim.BorderVisualizer.Metrics.Metrics;
@@ -90,7 +92,6 @@ public class BorderVisualizer extends JavaPlugin {
 	public static Towny Towny;
 
 	// Listeners
-	private CommandListener_General Commands_GENERAL;
 	private PlayerListener_Movement PlayerListener_MOVEMENT;
 	private PlayerListener_Quit PlayerListener_QUIT;
 
@@ -129,13 +130,6 @@ public class BorderVisualizer extends JavaPlugin {
 		} catch (Exception ex) {
 		}
 
-		// Load General command listener
-		try {
-			Commands_GENERAL = new CommandListener_General(this);
-			getCommand("bv").setExecutor(Commands_GENERAL);
-		} catch (Exception ex) {
-		}
-
 		// Load Player movement listener
 		if (Config.allowPlayerMoveEvent) {
 			try {
@@ -164,5 +158,14 @@ public class BorderVisualizer extends JavaPlugin {
 
 	public void onDisable() {
 
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command command,
+			String label, String[] args) {
+		// Let the CommandListener execute the command
+		CommandListener cmdExec = new CommandListener(
+				plugin);
+		return cmdExec.onCommand(sender, command,label, args);
 	}
 }

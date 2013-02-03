@@ -38,8 +38,6 @@ public class Visualize_Chunk {
 		}
 		// Save the player's location
 		Location location = player.getLocation();
-		BorderVisualizer.bv_players_chunk.add(player);
-		BorderVisualizer.bv_locations_chunk.add(player.getLocation());
 
 		// Get the border of the object
 		Chunk chunk = location.getChunk();
@@ -57,6 +55,10 @@ public class Visualize_Chunk {
 		// Generate the 2D Walls
 		Generate_2D_Square generator = new Generate_2D_Square(plugin);
 		generator.generate(player, x,y, z, size, height, block, null);
+		
+		// Save data
+		BorderVisualizer.bv_players_chunk.add(player);
+		BorderVisualizer.bv_locations_chunk.add(player.getLocation());
 
 		// Send Message
 		SendGame.sendMessage(

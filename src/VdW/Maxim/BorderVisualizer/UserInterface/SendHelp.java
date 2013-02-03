@@ -20,7 +20,12 @@ public class SendHelp {
 	public static void help_general(String message, Player player) {
 		// Check if player has permission
 		if (hasPermission("bordervisualizer.help", player)) {
+			// Send message to unknow receiver (player/console)
 			
+		}else
+		{
+			// No permission
+			SendGame.sendMessage(Messages.error_nopermission, player);
 		}
 	}
 

@@ -112,4 +112,25 @@ public class Visualize_Check {
 			visualize.remove_player(player);
 		}
 	}
+	
+	// This function is used to check if a player is a player ,and if yes
+	// if he has permission to use this ingame command
+	public static boolean hasPermission(String permission, Player player) {
+		// Check if the player is a player, and if he has permissions
+		if (player == null) {
+			// The console cannot use this
+			SendConsole.warning(Messages.error_noconsole);
+			return false;
+		} else {
+			if (player.hasPermission(permission)
+					|| (player.isOp() && Config.allowOpPermission)) {
+				// Player may use the command
+				return true;
+			}
+		}
+		// If the player has no permission, show message
+		SendGame.sendMessage(Messages.error_nopermission, player);
+		// Then return false
+		return false;
+	}
 }

@@ -46,9 +46,6 @@ public class Visualize_Towny_Town {
 
 		// Save the player's location
 		Location location = player.getLocation();
-		BorderVisualizer.bv_players_towny_town.add(player);
-		BorderVisualizer.bv_townName_towny_town.add("");
-		BorderVisualizer.bv_locations_towny_town.add(location);
 
 		// Get the world of the player
 		World world = player.getWorld();
@@ -111,15 +108,16 @@ public class Visualize_Towny_Town {
 				Generate_2D_Square generator = new Generate_2D_Square(plugin);
 				generator.generate(player, x,y, z, size, height, block,
 						ignore);
+				
+				// Save data
+				BorderVisualizer.bv_players_towny_town.add(player);
+				BorderVisualizer.bv_townName_towny_town.add("");
+				BorderVisualizer.bv_locations_towny_town.add(location);
 			}
 			// Send Message
 			SendGame.sendMessage(
 					Messages.config_visualized.replace("{VIEW}", "Town"), player);
 		} else {
-			// Remove the saved data
-			int index = BorderVisualizer.bv_players_towny_town.indexOf(player);
-			BorderVisualizer.bv_players_towny_town.remove(player);
-			BorderVisualizer.bv_locations_towny_town.remove(index);
 			// Send message
 			SendGame.sendMessage(Messages.error_nolocation.replace("{VIEW}", "town"), player);
 		}

@@ -25,11 +25,11 @@ import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Towny_Town;
 import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Towny_TownBlock;
 import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_WorldGuard_Region;
 
-public class CommandListener_General implements CommandExecutor {
+public class CommandListener implements CommandExecutor {
 	/* Get the plugin information from the main class */
 	public BorderVisualizer plugin;
 
-	public CommandListener_General(BorderVisualizer plugin) {
+	public CommandListener(BorderVisualizer plugin) {
 		this.plugin = plugin;
 	}
 
@@ -38,21 +38,15 @@ public class CommandListener_General implements CommandExecutor {
 			String[] arguments) {
 		Player player = null;
 		String argument = null;
-		Boolean isConsole = false;
-
+		
 		// Check if it is a real player
 		if (sender instanceof Player) {
 			// Add playerID to player
 			player = (Player) sender;
 		}
-		// Check if it is the console
-		if (player == null) {
-			// Set console to true
-			isConsole = true;
-		}
 
 		// Check if the player entered a valid command
-		if (cmd.equalsIgnoreCase("bv")) {
+		if (cmd.equalsIgnoreCase("bv") || cmd.equalsIgnoreCase("bordervisualizer")) {
 			// Check arguments
 			if (arguments.length == 0) {
 				// Visualize the border the player is in
@@ -160,8 +154,11 @@ public class CommandListener_General implements CommandExecutor {
 					}
 				}
 			}
+		}else{
+			// Unknow command (not registered)
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	// This function is used to check if a player is a player ,and if yes

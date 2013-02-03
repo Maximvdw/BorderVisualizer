@@ -42,8 +42,6 @@ public class Visualize_Towny_TownBlock {
 
 		// Save the player's location
 		Location location = player.getLocation();
-		BorderVisualizer.bv_players_towny_townblock.add(player);
-		BorderVisualizer.bv_locations_towny_townblock.add(location);
 
 		// Get the current townblock
 		TownBlock townBlock = TownyUniverse.getTownBlock(location);
@@ -75,16 +73,15 @@ public class Visualize_Towny_TownBlock {
 			Generate_2D_Square generator = new Generate_2D_Square(plugin);
 			generator.generate(player, x, y, z, size, height, block, null);
 
+			// Save data
+			BorderVisualizer.bv_players_towny_townblock.add(player);
+			BorderVisualizer.bv_locations_towny_townblock.add(location);
+			
 			// Send Message
 			SendGame.sendMessage(
 					Messages.config_visualized.replace("{VIEW}", "Townblock"),
 					player);
 		} else {
-			// Remove the saved data
-			int index = BorderVisualizer.bv_players_towny_townblock
-					.indexOf(player);
-			BorderVisualizer.bv_players_towny_townblock.remove(player);
-			BorderVisualizer.bv_locations_towny_townblock.remove(index);
 			// Send message
 			SendGame.sendMessage(
 					Messages.error_nolocation.replace("{VIEW}", "townblock"), player);
