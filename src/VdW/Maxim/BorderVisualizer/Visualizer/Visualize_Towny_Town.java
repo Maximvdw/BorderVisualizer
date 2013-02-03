@@ -121,7 +121,7 @@ public class Visualize_Towny_Town {
 			BorderVisualizer.bv_players_towny_town.remove(player);
 			BorderVisualizer.bv_locations_towny_town.remove(index);
 			// Send message
-			SendGame.sendMessage(Messages.error_towny_town_nolocation, player);
+			SendGame.sendMessage(Messages.error_nolocation.replace("{VIEW}", "town"), player);
 		}
 	}
 

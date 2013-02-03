@@ -35,156 +35,174 @@ public class Visualize_WorldGuard_Region {
 		this.plugin = plugin;
 	}
 
-	public void visualize_player(final Player player, int blockid,final String regionName) {
+	public void visualize_player(final Player player, int blockid,
+			final String regionName) {
 		/* DEBUG LOGGING */
 		if (Config.debugMode == true) {
 			SendConsole.info("EXEC: WORLDGUARD_REGION");
 			SendConsole.info("Starting VisualizePlayer:" + player.getName()
 					+ ";" + blockid);
 		}
-		// Run the render on a diffrent thread
-		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-			public void run()
-			{
-				// Save the player's location
-				Location location = player.getLocation();
-				BorderVisualizer.bv_players_worldguard_region.add(player);
-				BorderVisualizer.bv_regionName_worldguard_region.add(regionName);
-				BorderVisualizer.bv_locations_worldguard_region.add(location);
+		// Save the player's location
+		Location location = player.getLocation();
+		BorderVisualizer.bv_players_worldguard_region.add(player);
+		BorderVisualizer.bv_regionName_worldguard_region.add(regionName);
+		BorderVisualizer.bv_locations_worldguard_region.add(location);
 
-				// Get World
-				World world = location.getWorld();
+		// Get World
+		World world = location.getWorld();
 
-				// Get the region
-				WorldGuardPlugin wg = BorderVisualizer.WorldGuard;
-				RegionManager rm = wg.getRegionManager(world);
-				// Get the region
-				ProtectedRegion region;
-				
-				if (regionName == null)
-				{
-					// Get from position
-					ApplicableRegionSet rs = rm.getApplicableRegions(location);
-					region = rs.iterator().next();
-				}else{
-					// Get from text
-					region = rm.getRegion(regionName);
-				}
-				String id = region.getId();
-				String tn = region.getTypeName();
-				BlockVector l0 = region.getMinimumPoint();
-				BlockVector l1 = region.getMaximumPoint();
+		// Get the region
+		WorldGuardPlugin wg = BorderVisualizer.WorldGuard;
+		RegionManager rm = wg.getRegionManager(world);
+		// Get the region
+		ProtectedRegion region = null;
 
-				int x = (int) l0.getX();
-				int y = (int) l0.getY();
-				int z = (int) l0.getZ();
-				int x_size = (int) l1.getX() - (int) l0.getX();
-				int y_size = (int) l1.getY() - (int) l0.getY();
-				int z_size = (int) l1.getZ() - (int) l0.getZ();
-				
-				/* DEBUG LOGGING */
-				if (Config.debugMode == true) {
-					SendConsole.info("Visualization data: RegionID=" + id);
-					SendConsole.info("Visualization data: MaxPoint=" + l1);
-					SendConsole.info("Visualization data: MinPoint=" + l0);
-					SendConsole.info("Visualization data: Itteration=" + x_size * y_size
-							* z_size);
-				}
-
-				if (tn.equalsIgnoreCase("cuboid")) { /* Cubiod region? */
-					// Generate the 3D cuboid
-					Material block = Material.GLASS; // Block to replace it with
-					Generate_3D_Cuboid generator = new Generate_3D_Cuboid(plugin);
-					generator.generate(player, x,y, z,x_size,y_size,z_size,block,null);
-				} else {
-					// Not supported
-					SendGame.sendMessage(Messages.error_wg_notsupported, player);
-				}
-
+		if (regionName == null) {
+			// Get from position
+			ApplicableRegionSet rs = rm.getApplicableRegions(location);
+			if (rs.iterator().hasNext()) {
+				region = rs.iterator().next();
 			}
-		});
+		} else {
+			// Get from text
+			region = rm.getRegion(regionName);
+		}
+
+		// Check if region exists
+		if (region != null) {
+			String id = region.getId();
+			String tn = region.getTypeName();
+			BlockVector l0 = region.getMinimumPoint();
+			BlockVector l1 = region.getMaximumPoint();
+
+			int x = (int) l0.getX();
+			int y = (int) l0.getY();
+			int z = (int) l0.getZ();
+			int x_size = (int) l1.getX() - (int) l0.getX();
+			int y_size = (int) l1.getY() - (int) l0.getY();
+			int z_size = (int) l1.getZ() - (int) l0.getZ();
+
+			/* DEBUG LOGGING */
+			if (Config.debugMode == true) {
+				SendConsole.info("Visualization data: RegionID=" + id);
+				SendConsole.info("Visualization data: MaxPoint=" + l1);
+				SendConsole.info("Visualization data: MinPoint=" + l0);
+				SendConsole.info("Visualization data: Itteration=" + x_size
+						* y_size * z_size);
+			}
+
+			if (tn.equalsIgnoreCase("cuboid")) { /*
+												 * Cubiod region?
+												 */
+				// Generate the 3D cuboid
+				Material block = Material.GLASS; // Block to
+													// replace
+													// it with
+				Generate_3D_Cuboid generator = new Generate_3D_Cuboid(plugin);
+				generator.generate(player, x, y, z, x_size, y_size, z_size,
+						block, null);
+
+				// Send Message
+				SendGame.sendMessage(
+						Messages.config_visualized.replace("{VIEW}", "Region"),
+						player);
+			} else {
+				// Not supported
+				SendGame.sendMessage(Messages.error_wg_notsupported, player);
+			}
+		} else {
+			// Remove the saved data
+			int index = BorderVisualizer.bv_players_worldguard_region
+					.indexOf(player);
+			BorderVisualizer.bv_players_worldguard_region.remove(player);
+			BorderVisualizer.bv_regionName_worldguard_region.remove(index);
+			BorderVisualizer.bv_locations_worldguard_region.remove(index);
+			// Send message
+			SendGame.sendMessage(
+					Messages.error_nolocation.replace("{VIEW}", "region"),
+					player);
+		}
 	}
 
-	public void remove_player(final Player player, final String nextView, int blockid) {
+	public void remove_player(final Player player, final String nextView,
+			int blockid) {
 		/* DEBUG LOGGING */
 		if (Config.debugMode == true) {
 			SendConsole.info("EXEC: WORLDGUARD_REGION");
 			SendConsole.info("Starting RemovePlayer:" + player.getName());
 		}
-		// Run the render on a diffrent thread
-		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-			public void run()
-			{
-				// Get the players location before executing the command
-				int index = BorderVisualizer.bv_players_worldguard_region
-						.indexOf(player);
-				String regionName = BorderVisualizer.bv_regionName_worldguard_region
-						.get(index);
-				Location location = BorderVisualizer.bv_locations_worldguard_region
-						.get(index);
 
-				// Check if the player asked for 'A new region visualization'
-				if ((nextView != null) && (regionName != nextView)) {
-					SendGame.sendMessage(Messages.warning_nextview.replace("{VIEW}",
-							"WorldGuard Region"), player);
-				}
+		// Get the players location before executing the command
+		int index = BorderVisualizer.bv_players_worldguard_region
+				.indexOf(player);
+		String regionName = BorderVisualizer.bv_regionName_worldguard_region
+				.get(index);
+		Location location = BorderVisualizer.bv_locations_worldguard_region
+				.get(index);
 
-				// Remove the saved data
-				BorderVisualizer.bv_players_worldguard_region.remove(player);
-				BorderVisualizer.bv_regionName_worldguard_region.remove(index);
-				BorderVisualizer.bv_locations_worldguard_region.remove(index);
+		// Check if the player asked for 'A new region
+		// visualization'
+		if ((nextView != null) && (regionName != nextView)) {
+			SendGame.sendMessage(Messages.warning_nextview.replace("{VIEW}",
+					"WorldGuard Region"), player);
+		}
 
-				// Get World
-				World world = location.getWorld();
+		// Remove the saved data
+		BorderVisualizer.bv_players_worldguard_region.remove(player);
+		BorderVisualizer.bv_regionName_worldguard_region.remove(index);
+		BorderVisualizer.bv_locations_worldguard_region.remove(index);
 
-				// Get the region
-				WorldGuardPlugin wg = BorderVisualizer.WorldGuard;
-				RegionManager rm = wg.getRegionManager(world);
-				
-				// Get the region
-				ProtectedRegion region;
-				
-				if (regionName == null)
-				{
-					// Get from position
-					ApplicableRegionSet rs = rm.getApplicableRegions(location);
-					region = rs.iterator().next();
-				}else{
-					// Get from text
-					region = rm.getRegion(regionName);
-				}
-				
-				String id = region.getId();
-				String tn = region.getTypeName();
-				BlockVector l0 = region.getMinimumPoint();
-				BlockVector l1 = region.getMaximumPoint();
+		// Get World
+		World world = location.getWorld();
 
-				int x = (int) l0.getX();
-				int y = (int) l0.getY();
-				int z = (int) l0.getZ();
-				int x_size = (int) l1.getX() - (int) l0.getX();
-				int y_size = (int) l1.getY() - (int) l0.getY();
-				int z_size = (int) l1.getZ() - (int) l0.getZ();
+		// Get the region
+		WorldGuardPlugin wg = BorderVisualizer.WorldGuard;
+		RegionManager rm = wg.getRegionManager(world);
 
-				/* DEBUG LOGGING */
-				if (Config.debugMode == true) {
-					SendConsole.info("Visualization data: RegionID=" + id);
-					SendConsole.info("Visualization data: MaxPoint=" + l1);
-					SendConsole.info("Visualization data: MinPoint=" + l0);
-					SendConsole.info("Visualization data: Itteration=" + x_size * y_size
-							* z_size);
-				}
+		// Get the region
+		ProtectedRegion region;
 
-				if (tn.equalsIgnoreCase("cuboid")) { /* Cubiod region? */
-					// Generate the 3D cuboid
-					Material block = Material.AIR; // Block to replace it with
-					Generate_3D_Cuboid generator = new Generate_3D_Cuboid(plugin);
-					generator.generate(player, x,y, z,x_size,y_size,z_size,block,null);
-				} else {
-					// Not supported
-					SendGame.sendMessage(Messages.error_wg_notsupported, player);
-				}
-			}
-		});
+		if (regionName == null) {
+			// Get from position
+			ApplicableRegionSet rs = rm.getApplicableRegions(location);
+			region = rs.iterator().next();
+		} else {
+			// Get from text
+			region = rm.getRegion(regionName);
+		}
+
+		String id = region.getId();
+		String tn = region.getTypeName();
+		BlockVector l0 = region.getMinimumPoint();
+		BlockVector l1 = region.getMaximumPoint();
+
+		int x = (int) l0.getX();
+		int y = (int) l0.getY();
+		int z = (int) l0.getZ();
+		int x_size = (int) l1.getX() - (int) l0.getX();
+		int y_size = (int) l1.getY() - (int) l0.getY();
+		int z_size = (int) l1.getZ() - (int) l0.getZ();
+
+		/* DEBUG LOGGING */
+		if (Config.debugMode == true) {
+			SendConsole.info("Visualization data: RegionID=" + id);
+			SendConsole.info("Visualization data: MaxPoint=" + l1);
+			SendConsole.info("Visualization data: MinPoint=" + l0);
+			SendConsole.info("Visualization data: Itteration=" + x_size
+					* y_size * z_size);
+		}
+
+		if (tn.equalsIgnoreCase("cuboid")) { /* Cubiod region? */
+			// Generate the 3D cuboid
+			Material block = Material.AIR; // Block to replace
+											// it with
+			Generate_3D_Cuboid generator = new Generate_3D_Cuboid(plugin);
+			generator.generate(player, x, y, z, x_size, y_size, z_size, block,
+					null);
+		} else {
+			// Not supported
+			SendGame.sendMessage(Messages.error_wg_notsupported, player);
+		}
 	}
 }

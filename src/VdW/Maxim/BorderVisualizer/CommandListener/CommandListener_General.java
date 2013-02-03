@@ -19,6 +19,7 @@ import VdW.Maxim.BorderVisualizer.Configuration.Config;
 import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendGame;
+import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Check;
 import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Chunk;
 import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Towny_Town;
 import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Towny_TownBlock;
@@ -54,38 +55,59 @@ public class CommandListener_General implements CommandExecutor {
 		if (cmd.equalsIgnoreCase("bv")) {
 			// Check arguments
 			if (arguments.length == 0) {
-				// Show help
+				// Visualize the border the player is in
+				// Load visualizer
+				Visualize_Check visualize = new Visualize_Check(
+						plugin);
+				visualize.visualize_player(player, 1);
 			} else {
 				// Check argument
 				argument = arguments[0];
 				// --------------
 				if (argument.equalsIgnoreCase("townblock")) {
-					if (hasPermission("bordervisualizer.view.townblock", player) == true) {
-						// Load visualizer
-						Visualize_Towny_TownBlock visualize = new Visualize_Towny_TownBlock(
-								plugin);
-						if (!BorderVisualizer.bv_players_towny_townblock
-								.contains(player)) {
-							// Show blocks
-							visualize.visualize_player(player, 1);
-						} else {
-							// Remove blocks
-							visualize.remove_player(player);
+					// Check if plugin is loaded
+					if (BorderVisualizer.Towny != null) {
+						// Check if player has permission
+						if (hasPermission("bordervisualizer.view.townblock",
+								player) == true) {
+							// Load visualizer
+							Visualize_Towny_TownBlock visualize = new Visualize_Towny_TownBlock(
+									plugin);
+							if (!BorderVisualizer.bv_players_towny_townblock
+									.contains(player)) {
+								// Show blocks
+								visualize.visualize_player(player, 1);
+							} else {
+								// Remove blocks
+								visualize.remove_player(player);
+							}
 						}
+					} else {
+						// Send message
+						SendGame.sendMessage(Messages.error_plugin_notfound
+								.replace("{PLUGIN}", "Towny"), player);
 					}
 				} else if (argument.equalsIgnoreCase("town")) {
-					if (hasPermission("bordervisualizer.view.town", player) == true) {
-						// Load visualizer
-						Visualize_Towny_Town visualize = new Visualize_Towny_Town(
-								plugin);
-						if (!BorderVisualizer.bv_players_towny_town
-								.contains(player)) {
-							// Show blocks
-							visualize.visualize_player(player, 1);
-						} else {
-							// Remove blocks
-							visualize.remove_player(player,null,1);
+					// Check if plugin is loaded
+					if (BorderVisualizer.Towny != null) {
+						// Check if player has permission
+						if (hasPermission("bordervisualizer.view.town", player) == true) {
+							// Load visualizer
+							Visualize_Towny_Town visualize = new Visualize_Towny_Town(
+									plugin);
+							if (!BorderVisualizer.bv_players_towny_town
+									.contains(player)) {
+								// Show blocks
+								visualize.visualize_player(player, 1);
+							} else {
+								// Remove blocks
+								visualize.remove_player(player, null, 1);
+							}
 						}
+					} else {
+						// Send message
+						SendGame.sendMessage(Messages.error_plugin_notfound
+								.replace("{PLUGIN}", "Towny"), player);
 					}
 				} else if (argument.equalsIgnoreCase("chunk")) {
 					if (hasPermission("bordervisualizer.view.chunk", player) == true) {
@@ -100,30 +122,41 @@ public class CommandListener_General implements CommandExecutor {
 						}
 					}
 				} else if (argument.equalsIgnoreCase("region")) {
-					if (hasPermission("bordervisualizer.view.region", player) == true) {
-						// Load visualizer
-						Visualize_WorldGuard_Region visualize = new Visualize_WorldGuard_Region(
-								plugin);
-						if (!BorderVisualizer.bv_players_worldguard_region
-								.contains(player)) {
-							if (arguments.length == 1) {
-								// Show blocks from position
-								visualize.visualize_player(player, 1, null);
+					// Check if plugin is loaded
+					if (BorderVisualizer.WorldGuard != null) {
+						// Check if player has permission
+						if (hasPermission("bordervisualizer.view.region",
+								player) == true) {
+							// Load visualizer
+							Visualize_WorldGuard_Region visualize = new Visualize_WorldGuard_Region(
+									plugin);
+							if (!BorderVisualizer.bv_players_worldguard_region
+									.contains(player)) {
+								if (arguments.length == 1) {
+									// Show blocks from position
+									visualize.visualize_player(player, 1, null);
+								} else {
+									// Show blocks from name
+									argument = arguments[1];
+									visualize.visualize_player(player, 1,
+											argument);
+								}
 							} else {
-								// Show blocks from name
-								argument = arguments[1];
-								visualize.visualize_player(player, 1, argument);
-							}
-						} else {
-							if (arguments.length == 1) {
-								// Remove blocks
-								visualize.remove_player(player, null, 0);
-							} else {
-								// Show blocks
-								argument = arguments[1];
-								visualize.remove_player(player, argument, 0);
+								if (arguments.length == 1) {
+									// Remove blocks
+									visualize.remove_player(player, null, 0);
+								} else {
+									// Show blocks
+									argument = arguments[1];
+									visualize
+											.remove_player(player, argument, 0);
+								}
 							}
 						}
+					} else {
+						// Send message
+						SendGame.sendMessage(Messages.error_plugin_notfound
+								.replace("{PLUGIN}", "WorldGuard"), player);
 					}
 				}
 			}

@@ -21,14 +21,14 @@ public class Messages {
 			"&cThe region '{REGION}' was not found!";
 	public static String error_towny_town_notfound = 
 			"&cThe town '{TOWN}' was not found!";
-	public static String error_towny_town_nolocation = 
-			"&cThere is no town at your location!";
-	public static String error_towny_townblock_nolocation = 
-			"&cThere is no townblock at your location!";
+	public static String error_nolocation = 
+			"&cThere is no {VIEW} at your location!";
 	public static String error_config_copy =
 			"&cUnable to copy the config files!";
 	public static String error_config_load = 
 			"&cAn error ocured while loading the config!";
+	public static String error_plugin_notfound = 
+			"&2[&fBorderVisualizer&2]&c The plugin {PLUGIN} was not found!";
 	/* END ERROR MESSAGES */
 	
 	
