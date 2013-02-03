@@ -45,7 +45,7 @@ public class Generate_2D_Square {
 			SendConsole.info("Distance Z: " + z_distance);
 		}
 		
-		if (x_distance < 500 && z_distance < 500)
+		if (x_distance < 100+size_sides || z_distance < 100+size_sides)
 		{
 			// Run the render on a diffrent thread
 			plugin.getServer().getScheduler()

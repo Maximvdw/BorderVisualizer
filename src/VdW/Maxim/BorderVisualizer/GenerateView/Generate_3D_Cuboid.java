@@ -54,7 +54,7 @@ public class Generate_3D_Cuboid {
 			SendConsole.info("Distance Z: " + z_distance);
 		}
 
-		if (x_distance < 500 && z_distance < 500) {
+		if (x_distance < 100+x_size || z_distance < 100+z_size){
 			// Run the render on a diffrent thread
 			plugin.getServer().getScheduler()
 					.runTaskAsynchronously(plugin, new Runnable() {
