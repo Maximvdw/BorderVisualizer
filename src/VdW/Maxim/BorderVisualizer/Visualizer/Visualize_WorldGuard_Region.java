@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
@@ -56,7 +57,18 @@ public class Visualize_WorldGuard_Region {
 				// Get the region
 				WorldGuardPlugin wg = BorderVisualizer.WorldGuard;
 				RegionManager rm = wg.getRegionManager(world);
-				ProtectedRegion region = rm.getRegion(regionName);
+				// Get the region
+				ProtectedRegion region;
+				
+				if (regionName == null)
+				{
+					// Get from position
+					ApplicableRegionSet rs = rm.getApplicableRegions(location);
+					region = rs.iterator().next();
+				}else{
+					// Get from text
+					region = rm.getRegion(regionName);
+				}
 				String id = region.getId();
 				String tn = region.getTypeName();
 				BlockVector l0 = region.getMinimumPoint();
@@ -174,7 +186,20 @@ public class Visualize_WorldGuard_Region {
 				// Get the region
 				WorldGuardPlugin wg = BorderVisualizer.WorldGuard;
 				RegionManager rm = wg.getRegionManager(world);
-				ProtectedRegion region = rm.getRegion(regionName);
+				
+				// Get the region
+				ProtectedRegion region;
+				
+				if (regionName == null)
+				{
+					// Get from position
+					ApplicableRegionSet rs = rm.getApplicableRegions(location);
+					region = rs.iterator().next();
+				}else{
+					// Get from text
+					region = rm.getRegion(regionName);
+				}
+				
 				String id = region.getId();
 				String tn = region.getTypeName();
 				BlockVector l0 = region.getMinimumPoint();

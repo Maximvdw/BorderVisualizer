@@ -16,7 +16,10 @@ import org.bukkit.entity.Player;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
 import VdW.Maxim.BorderVisualizer.Configuration.Config;
+import VdW.Maxim.BorderVisualizer.GenerateView.Generate_2D_Walls;
+import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
+import VdW.Maxim.BorderVisualizer.UserInterface.SendGame;
 
 public class Visualize_Chunk {
 	/* Get the plugin information from the main class */
@@ -33,7 +36,6 @@ public class Visualize_Chunk {
 			SendConsole.info("Starting VisualizePlayer:" + player.getName()
 					+ ";" + blockid);
 		}
-
 		// Save the player's location
 		Location location = player.getLocation();
 		BorderVisualizer.bv_players_chunk.add(player);
@@ -41,28 +43,24 @@ public class Visualize_Chunk {
 
 		// Get the border of the object
 		Chunk chunk = location.getChunk();
-		// Get the four corners of the chunk
-		Location corner1 = chunk.getBlock(0, 0, 0).getLocation();
-		Location corner2 = chunk.getBlock(15, 0, 0).getLocation();
-		Location corner3 = chunk.getBlock(0, 0, 15).getLocation();
-		Location corner4 = chunk.getBlock(15, 0, 15).getLocation();
-		int i = 0;
-		int j = 0;
-		for (i = 0; i < 127; i++)
-			for (j = 0; j < 15; j++) {
-				corner1 = chunk.getBlock(j, i, 0).getLocation();
-				corner2 = chunk.getBlock(15, i, j).getLocation();
-				corner3 = chunk.getBlock(15 - j, i, 15).getLocation();
-				corner4 = chunk.getBlock(0, i, 15 - j).getLocation();
-				if (corner1.getBlock().getType() == Material.AIR)
-					player.sendBlockChange(corner1, Material.GLASS, (byte) 0);
-				if (corner2.getBlock().getType() == Material.AIR)
-					player.sendBlockChange(corner2, Material.GLASS, (byte) 0);
-				if (corner3.getBlock().getType() == Material.AIR)
-					player.sendBlockChange(corner3, Material.GLASS, (byte) 0);
-				if (corner4.getBlock().getType() == Material.AIR)
-					player.sendBlockChange(corner4, Material.GLASS, (byte) 0);
-			}
+		// Get the coords of the chunk
+		int size = 16; // Fixed value
+		
+		// Get the size and y position to show blocks
+		int height = (int)location.getY() + 20;
+		int y = 0;
+		
+		int x = chunk.getX() * size;
+		int z = chunk.getZ() * size;
+		Material block = Material.GLASS; // Block to replace it with
+
+		// Generate the 2D Walls
+		Generate_2D_Walls generator = new Generate_2D_Walls(plugin);
+		generator.generate_square(player, x,y, z, size, height, block, null);
+
+		// Send Message
+		SendGame.sendMessage(
+				Messages.config_visualized.replace("{VIEW}", "Chunk"), player);
 	}
 
 	public void remove_player(Player player) {
@@ -82,27 +80,19 @@ public class Visualize_Chunk {
 
 		// Get the border of the object
 		Chunk chunk = location.getChunk();
-		// Get the four corners of the chunk
-		Location corner1 = chunk.getBlock(0, 0, 0).getLocation();
-		Location corner2 = chunk.getBlock(15, 0, 0).getLocation();
-		Location corner3 = chunk.getBlock(0, 0, 15).getLocation();
-		Location corner4 = chunk.getBlock(15, 0, 15).getLocation();
-		int i = 0;
-		int j = 0;
-		for (i = 0; i < 127; i++)
-			for (j = 0; j < 15; j++) {
-				corner1 = chunk.getBlock(j, i, 0).getLocation();
-				corner2 = chunk.getBlock(15, i, j).getLocation();
-				corner3 = chunk.getBlock(15 - j, i, 15).getLocation();
-				corner4 = chunk.getBlock(0, i, 15 - j).getLocation();
-				if (corner1.getBlock().getType() == Material.AIR)
-					player.sendBlockChange(corner1, Material.AIR, (byte) 0);
-				if (corner2.getBlock().getType() == Material.AIR)
-					player.sendBlockChange(corner2, Material.AIR, (byte) 0);
-				if (corner3.getBlock().getType() == Material.AIR)
-					player.sendBlockChange(corner3, Material.AIR, (byte) 0);
-				if (corner4.getBlock().getType() == Material.AIR)
-					player.sendBlockChange(corner4, Material.AIR, (byte) 0);
-			}
+		// Get the coords of the chunk
+		int size = 16; // Fixed value
+		
+		// Get the size and y position to show blocks
+		int height = (int)location.getY() + 20;
+		int y = 0;
+		
+		int x = chunk.getX() * size;
+		int z = chunk.getZ() * size;
+		Material block = Material.AIR; // Block to replace it with
+
+		// Generate the 2D Walls
+		Generate_2D_Walls generator = new Generate_2D_Walls(plugin);
+		generator.generate_square(player, x,y, z, size, height, block, null);
 	}
 }

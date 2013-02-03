@@ -45,6 +45,8 @@ public class Messages {
 	/* CONFIRM MESSAGES */
 	public static String confirm_copy_config = 
 			"&aCopying config.yml file!";
+	public static String config_visualized = 
+			"&2[&fBorderVisualizer&2]&a Visualized {VIEW}.";
 	/* END CONFIRM MESSAGES */
 	
 	
@@ -52,6 +54,6 @@ public class Messages {
 	public static String help_header = 
 			"&6--------[ BorderVisualizer]--------";
 	public static String help_worldguard_region =
-			"&cPlease define a regionID &4/bv region <id>";
+			"&cPlease define a regionID! &4/bv region <id>";
 	/* END HELP MESSAGES */
 }

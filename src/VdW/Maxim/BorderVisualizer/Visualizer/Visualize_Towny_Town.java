@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
 import VdW.Maxim.BorderVisualizer.Configuration.Config;
+import VdW.Maxim.BorderVisualizer.GenerateView.Generate_2D_Walls;
 import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendGame;
@@ -46,6 +47,7 @@ public class Visualize_Towny_Town {
 		// Save the player's location
 		Location location = player.getLocation();
 		BorderVisualizer.bv_players_towny_town.add(player);
+		BorderVisualizer.bv_townName_towny_town.add("");
 		BorderVisualizer.bv_locations_towny_town.add(location);
 
 		// Get the world of the player
@@ -59,84 +61,61 @@ public class Visualize_Towny_Town {
 		}
 
 		// Check if town exist
-		if (town != null)
-		{
+		if (town != null) {
 			// Get all the townblocks
 			List<TownBlock> blocks = town.getTownBlocks();
 			for (TownBlock townBlock : blocks) {
 				// Get the size of a townblock
-				int townblocksize = Coord.getCellSize();
-				// Define the four corners
-				Location corner1;
-				Location corner2;
-				Location corner3;
-				Location corner4;
+				int size = Coord.getCellSize();
 				// Check if there are townblocks next to it
-				boolean face_x = false;
-				boolean face_z = false;
-				boolean face_x_neg = false;
-				boolean face_z_neg = false;
+				boolean[] ignore = new boolean[4];
 				if (TownyUniverse.getTownBlock(new Location(world, (townBlock
-						.getX() + 1) * townblocksize, 0, (townBlock.getZ()) * townblocksize)) != null) {
-					face_x = true;
+						.getX() + 1) * size, 0, (townBlock.getZ()) * size)) != null) {
+					ignore[0] = true;
 				}
 				if (TownyUniverse.getTownBlock(new Location(world, (townBlock
-						.getX()) * townblocksize, 0, (townBlock.getZ() + 1) * townblocksize)) != null) {
-					face_z = true;
+						.getX()) * size, 0, (townBlock.getZ() + 1) * size)) != null) {
+					ignore[1] = true;
 				}
 				if (TownyUniverse.getTownBlock(new Location(world, (townBlock
-						.getX() - 1) * townblocksize, 0, (townBlock.getZ()) * townblocksize)) != null) {
-					face_x_neg = true;
+						.getX() - 1) * size, 0, (townBlock.getZ()) * size)) != null) {
+					ignore[2] = true;
 				}
 				if (TownyUniverse.getTownBlock(new Location(world, (townBlock
-						.getX()) * townblocksize, 0, (townBlock.getZ() - 1) * townblocksize)) != null) {
-					face_z_neg = true;
+						.getX()) * size, 0, (townBlock.getZ() - 1) * size)) != null) {
+					ignore[3] = true;
 				}
 
 				// Get location of the townblock
-				int x = townblocksize*townBlock.getX();
-				int z = townblocksize*townBlock.getZ();
-				
+				int x = size * townBlock.getX();
+				int z = size * townBlock.getZ();
+
 				/* DEBUG LOGGING */
-				if (Config.debugMode==true)
-				{
-					SendConsole.info("Visualization data: TownBlockSize=" + townblocksize);
+				if (Config.debugMode == true) {
+					SendConsole.info("Visualization data: TownBlockSize="
+							+ size);
 					SendConsole.info("Visualization data: Block_x=" + x);
 					SendConsole.info("Visualization data: Block_z=" + z);
-					SendConsole.info("Visualization data: TownBlock_x=" + townBlock.getX());
-					SendConsole.info("Visualization data: TownBlock_z=" + townBlock.getZ());
+					SendConsole.info("Visualization data: TownBlock_x="
+							+ townBlock.getX());
+					SendConsole.info("Visualization data: TownBlock_z="
+							+ townBlock.getZ());
 				}
-			
-				townblocksize -= 1;
-				int i = 0;
-				int j = 0;
-				for (i = 0; i < 127; i++)
-					for (j = 0; j < townblocksize; j++) {
-						corner1 = new Location(world, x + j, i, z);
-						corner2 = new Location(world, x + townblocksize, i, j + z);
-						corner3 = new Location(world, (x + townblocksize) - j, i,townblocksize + z);
-						corner4 = new Location(world, x, i, (z + townblocksize) - j);
-						if (corner1.getBlock().getType() == Material.AIR
-								&& face_z_neg == false)
-							player.sendBlockChange(corner1, Material.GLASS,
-									(byte) 0);
-						if (corner2.getBlock().getType() == Material.AIR
-								&& face_x == false)
-							player.sendBlockChange(corner2, Material.GLASS,
-									(byte) 0);
-						if (corner3.getBlock().getType() == Material.AIR
-								&& face_z == false)
-							player.sendBlockChange(corner3, Material.GLASS,
-									(byte) 0);
-						if (corner4.getBlock().getType() == Material.AIR
-								&& face_x_neg == false)
-							player.sendBlockChange(corner4, Material.GLASS,
-									(byte) 0);
-					}
+
+				// Get the size and y position to show blocks
+				int height = (int)location.getY() + 20;
+				int y = 0;
+				Material block = Material.GLASS;
+
+				// Generate the 2D Walls
+				Generate_2D_Walls generator = new Generate_2D_Walls(plugin);
+				generator.generate_square(player, x,y, z, size, height, block,
+						ignore);
 			}
-		}
-		else
-		{
+			// Send Message
+			SendGame.sendMessage(
+					Messages.config_visualized.replace("{VIEW}", "Town"), player);
+		} else {
 			// Remove the saved data
 			int index = BorderVisualizer.bv_players_towny_town.indexOf(player);
 			BorderVisualizer.bv_players_towny_town.remove(player);
@@ -154,21 +133,21 @@ public class Visualize_Towny_Town {
 		}
 		// Get the players location before executing the command
 		int index = BorderVisualizer.bv_players_towny_town.indexOf(player);
-		String townName = BorderVisualizer.bv_townName_towny_town
-				.get(index);
+		String townName = BorderVisualizer.bv_townName_towny_town.get(index);
 		Location location = (Location) BorderVisualizer.bv_locations_towny_town
 				.get(index);
 
 		// Check if the player asked for 'A new region visualization'
 		if ((nextView != null) && (townName != nextView)) {
-			SendGame.sendMessage(Messages.warning_nextview.replace("{VIEW}",
-					"Town"), player);
+			SendGame.sendMessage(
+					Messages.warning_nextview.replace("{VIEW}", "Town"), player);
 		}
-		
+
 		// Remove the saved data
 		BorderVisualizer.bv_players_towny_town.remove(player);
 		BorderVisualizer.bv_locations_towny_town.remove(index);
-
+		BorderVisualizer.bv_townName_towny_town.remove(index);
+		
 		// Get the world of the player
 		World world = location.getWorld();
 		// Get the town of the player location
@@ -183,75 +162,52 @@ public class Visualize_Towny_Town {
 		List<TownBlock> blocks = town.getTownBlocks();
 		for (TownBlock townBlock : blocks) {
 			// Get the size of a townblock
-			int townblocksize = Coord.getCellSize();
-			// Define the four corners
-			Location corner1;
-			Location corner2;
-			Location corner3;
-			Location corner4;
+			int size = Coord.getCellSize();
+			
 			// Check if there are townblocks next to it
-			boolean face_x = false;
-			boolean face_z = false;
-			boolean face_x_neg = false;
-			boolean face_z_neg = false;
+			boolean[] ignore = new boolean[4];
 			if (TownyUniverse.getTownBlock(new Location(world, (townBlock
-					.getX() + 1) * 16, 0, (townBlock.getZ()) * 16)) != null) {
-				face_x = true;
+					.getX() + 1) * size, 0, (townBlock.getZ()) * size)) != null) {
+				ignore[0] = true;
 			}
 			if (TownyUniverse.getTownBlock(new Location(world, (townBlock
-					.getX()) * 16, 0, (townBlock.getZ() + 1) * 16)) != null) {
-				face_z = true;
+					.getX()) * size, 0, (townBlock.getZ() + 1) * size)) != null) {
+				ignore[1] = true;
 			}
 			if (TownyUniverse.getTownBlock(new Location(world, (townBlock
-					.getX() - 1) * 16, 0, (townBlock.getZ()) * 16)) != null) {
-				face_x_neg = true;
+					.getX() - 1) * size, 0, (townBlock.getZ()) * size)) != null) {
+				ignore[2] = true;
 			}
 			if (TownyUniverse.getTownBlock(new Location(world, (townBlock
-					.getX()) * 16, 0, (townBlock.getZ() - 1) * 16)) != null) {
-				face_z_neg = true;
+					.getX()) * size, 0, (townBlock.getZ() - 1) * size)) != null) {
+				ignore[3] = true;
 			}
 
 			// Get location of the townblock
-			int x = townblocksize*townBlock.getX();
-			int z = townblocksize*townBlock.getZ();
-			
+			int x = size * townBlock.getX();
+			int z = size * townBlock.getZ();
+
 			/* DEBUG LOGGING */
-			if (Config.debugMode==true)
-			{
-				SendConsole.info("Visualization data: TownBlockSize=" + townblocksize);
+			if (Config.debugMode == true) {
+				SendConsole.info("Visualization data: TownBlockSize="
+						+ size);
 				SendConsole.info("Visualization data: Block_x=" + x);
 				SendConsole.info("Visualization data: Block_z=" + z);
-				SendConsole.info("Visualization data: TownBlock_x=" + townBlock.getX());
-				SendConsole.info("Visualization data: TownBlock_z=" + townBlock.getZ());
+				SendConsole.info("Visualization data: TownBlock_x="
+						+ townBlock.getX());
+				SendConsole.info("Visualization data: TownBlock_z="
+						+ townBlock.getZ());
 			}
-		
-			townblocksize -= 1;
-			int i = 0;
-			int j = 0;
-			for (i = 0; i < 127; i++)
-				for (j = 0; j < townblocksize; j++) {
-					corner1 = new Location(world, x + j, i, z);
-					corner2 = new Location(world, x + townblocksize, i, j + z);
-					corner3 = new Location(world, (x + townblocksize) - j, i,
-							townblocksize + z);
-					corner4 = new Location(world, x, i, (z + townblocksize) - j);
-					if (corner1.getBlock().getType() == Material.AIR
-							&& face_z_neg == false)
-						player.sendBlockChange(corner1, Material.AIR,
-								(byte) 0);
-					if (corner2.getBlock().getType() == Material.AIR
-							&& face_x == false)
-						player.sendBlockChange(corner2, Material.AIR,
-								(byte) 0);
-					if (corner3.getBlock().getType() == Material.AIR
-							&& face_z == false)
-						player.sendBlockChange(corner3, Material.AIR,
-								(byte) 0);
-					if (corner4.getBlock().getType() == Material.AIR
-							&& face_x_neg == false)
-						player.sendBlockChange(corner4, Material.AIR,
-								(byte) 0);
-				}
+
+			// Get the size and y position to show blocks
+			int height = (int)location.getY() + 20;
+			int y = 0;
+			Material block = Material.AIR;
+
+			// Generate the 2D Walls
+			Generate_2D_Walls generator = new Generate_2D_Walls(plugin);
+			generator.generate_square(player, x,y, z, size, height, block,
+					ignore);
 		}
 	}
 }

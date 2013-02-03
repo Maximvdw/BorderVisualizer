@@ -107,9 +107,10 @@ public class CommandListener_General implements CommandExecutor {
 						if (!BorderVisualizer.bv_players_worldguard_region
 								.contains(player)) {
 							if (arguments.length == 1) {
-								// Error , Show help
+								// Show blocks from position
+								visualize.visualize_player(player, 1, null);
 							} else {
-								// Show blocks
+								// Show blocks from name
 								argument = arguments[1];
 								visualize.visualize_player(player, 1, argument);
 							}
