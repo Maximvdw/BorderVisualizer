@@ -22,6 +22,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
 import VdW.Maxim.BorderVisualizer.Configuration.Config;
+import VdW.Maxim.BorderVisualizer.GenerateView.Generate_3D_Cuboid;
 import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendGame;
@@ -74,74 +75,27 @@ public class Visualize_WorldGuard_Region {
 				BlockVector l0 = region.getMinimumPoint();
 				BlockVector l1 = region.getMaximumPoint();
 
-				double x_loc = l0.getX();
-				double y_loc = l0.getY();
-				double z_loc = l0.getZ();
-				double x_len = l1.getX() - l0.getX();
-				double y_len = l1.getY() - l0.getY();
-				double z_len = l1.getZ() - l0.getZ();
-
+				int x = (int) l0.getX();
+				int y = (int) l0.getY();
+				int z = (int) l0.getZ();
+				int x_size = (int) l1.getX() - (int) l0.getX();
+				int y_size = (int) l1.getY() - (int) l0.getY();
+				int z_size = (int) l1.getZ() - (int) l0.getZ();
+				
 				/* DEBUG LOGGING */
 				if (Config.debugMode == true) {
 					SendConsole.info("Visualization data: RegionID=" + id);
 					SendConsole.info("Visualization data: MaxPoint=" + l1);
 					SendConsole.info("Visualization data: MinPoint=" + l0);
-					SendConsole.info("Visualization data: Itteration=" + x_len * y_len
-							* z_len);
+					SendConsole.info("Visualization data: Itteration=" + x_size * y_size
+							* z_size);
 				}
 
 				if (tn.equalsIgnoreCase("cuboid")) { /* Cubiod region? */
-					/* Make outline */
-					// Define the four corners
-					Location corner1;
-					Location corner2;
-					Location corner3;
-					Location corner4;
-					Location corner5;
-					Location corner6;
-
-					double i = 0;
-					double j = 0;
-					double k = 0;
-					for (i = 0; i <= x_len; i++) {
-						for (j = 0; j <= y_len; j++) {
-							corner1 = new Location(world, i + x_loc, j + y_loc, z_loc);
-							corner2 = new Location(world, i + x_loc, j + y_loc, z_loc
-									+ z_len);
-							if (corner1.getBlock().getType() == Material.AIR)
-								player.sendBlockChange(corner1, Material.GLASS,
-										(byte) 0);
-							if (corner2.getBlock().getType() == Material.AIR)
-								player.sendBlockChange(corner2, Material.GLASS,
-										(byte) 0);
-						}
-					}
-					for (j = 0; j <= y_len; j++) {
-						for (k = 0; k <= z_len; k++) {
-							corner3 = new Location(world, x_loc, j + y_loc, z_loc + k);
-							corner4 = new Location(world, x_len + x_loc, j + y_loc,
-									z_loc + k);
-							if (corner3.getBlock().getType() == Material.AIR)
-								player.sendBlockChange(corner3, Material.GLASS,
-										(byte) 0);
-							if (corner4.getBlock().getType() == Material.AIR)
-								player.sendBlockChange(corner4, Material.GLASS,
-										(byte) 0);
-						}
-					}
-					for (i = 0; i <= x_len; i++) {
-						for (k = 0; k <= z_len; k++) {
-							corner5 = new Location(world, x_loc + i, y_loc, z_loc + k);
-							corner6 = new Location(world, x_loc + i, y_loc + y_len,
-									z_loc + k);
-							if (corner5.getBlock().getType() == Material.AIR)
-								player.sendBlockChange(corner5, Material.GLASS,
-										(byte) 0);
-							if (corner6.getBlock().getType() == Material.AIR)
-								player.sendBlockChange(corner6, Material.GLASS,
-										(byte) 0);
-						}
-					}
+					// Generate the 3D cuboid
+					Material block = Material.GLASS; // Block to replace it with
+					Generate_3D_Cuboid generator = new Generate_3D_Cuboid(plugin);
+					generator.generate(player, x,y, z,x_size,y_size,z_size,block,null);
 				} else {
 					// Not supported
 					SendGame.sendMessage(Messages.error_wg_notsupported, player);
@@ -205,68 +159,27 @@ public class Visualize_WorldGuard_Region {
 				BlockVector l0 = region.getMinimumPoint();
 				BlockVector l1 = region.getMaximumPoint();
 
-				double x_loc = l0.getX();
-				double y_loc = l0.getY();
-				double z_loc = l0.getZ();
-				double x_len = l1.getX() - l0.getX();
-				double y_len = l1.getY() - l0.getY();
-				double z_len = l1.getZ() - l0.getZ();
+				int x = (int) l0.getX();
+				int y = (int) l0.getY();
+				int z = (int) l0.getZ();
+				int x_size = (int) l1.getX() - (int) l0.getX();
+				int y_size = (int) l1.getY() - (int) l0.getY();
+				int z_size = (int) l1.getZ() - (int) l0.getZ();
 
 				/* DEBUG LOGGING */
 				if (Config.debugMode == true) {
 					SendConsole.info("Visualization data: RegionID=" + id);
 					SendConsole.info("Visualization data: MaxPoint=" + l1);
 					SendConsole.info("Visualization data: MinPoint=" + l0);
-					SendConsole.info("Visualization data: Itteration=" + x_len * y_len
-							* z_len);
+					SendConsole.info("Visualization data: Itteration=" + x_size * y_size
+							* z_size);
 				}
 
 				if (tn.equalsIgnoreCase("cuboid")) { /* Cubiod region? */
-					/* Make outline */
-					// Define the four corners
-					Location corner1;
-					Location corner2;
-					Location corner3;
-					Location corner4;
-					Location corner5;
-					Location corner6;
-
-					double i = 0;
-					double j = 0;
-					double k = 0;
-					for (i = 0; i <= x_len; i++) {
-						for (j = 0; j <= y_len; j++) {
-							corner1 = new Location(world, i + x_loc, j + y_loc, z_loc);
-							corner2 = new Location(world, i + x_loc, j + y_loc, z_loc
-									+ z_len);
-							if (corner1.getBlock().getType() == Material.AIR)
-								player.sendBlockChange(corner1, Material.AIR, (byte) 0);
-							if (corner2.getBlock().getType() == Material.AIR)
-								player.sendBlockChange(corner2, Material.AIR, (byte) 0);
-						}
-					}
-					for (j = 0; j <= y_len; j++) {
-						for (k = 0; k <= z_len; k++) {
-							corner3 = new Location(world, x_loc, j + y_loc, z_loc + k);
-							corner4 = new Location(world, x_len + x_loc, j + y_loc,
-									z_loc + k);
-							if (corner3.getBlock().getType() == Material.AIR)
-								player.sendBlockChange(corner3, Material.AIR, (byte) 0);
-							if (corner4.getBlock().getType() == Material.AIR)
-								player.sendBlockChange(corner4, Material.AIR, (byte) 0);
-						}
-					}
-					for (i = 0; i <= x_len; i++) {
-						for (k = 0; k <= z_len; k++) {
-							corner5 = new Location(world, x_loc + i, y_loc, z_loc + k);
-							corner6 = new Location(world, x_loc + i, y_loc + y_len,
-									z_loc + k);
-							if (corner5.getBlock().getType() == Material.AIR)
-								player.sendBlockChange(corner5, Material.AIR, (byte) 0);
-							if (corner6.getBlock().getType() == Material.AIR)
-								player.sendBlockChange(corner6, Material.AIR, (byte) 0);
-						}
-					}
+					// Generate the 3D cuboid
+					Material block = Material.AIR; // Block to replace it with
+					Generate_3D_Cuboid generator = new Generate_3D_Cuboid(plugin);
+					generator.generate(player, x,y, z,x_size,y_size,z_size,block,null);
 				} else {
 					// Not supported
 					SendGame.sendMessage(Messages.error_wg_notsupported, player);

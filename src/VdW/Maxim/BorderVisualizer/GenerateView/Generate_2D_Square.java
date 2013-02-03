@@ -16,16 +16,16 @@ import org.bukkit.entity.Player;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
 
-public class Generate_2D_Walls {
+public class Generate_2D_Square {
 	/* Get the plugin information from the main class */
 	public BorderVisualizer plugin;
 
-	public Generate_2D_Walls(BorderVisualizer plugin) {
+	public Generate_2D_Square(BorderVisualizer plugin) {
 		this.plugin = plugin;
 	}
 
 	/* Generate Walls of Matterials */
-	public void generate_square(Player player, int x,int y, int z, int size,
+	public void generate(Player player, int x,int y, int z, int size,
 			int height, Material block, boolean[] ignore) {
 		// Decrease size with one
 		size -= 1;
