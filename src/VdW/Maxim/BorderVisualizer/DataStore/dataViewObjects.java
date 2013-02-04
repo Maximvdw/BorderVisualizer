@@ -11,7 +11,8 @@ package VdW.Maxim.BorderVisualizer.DataStore;
 
 import java.util.List;
 
-public class dataNames {
+
+public class dataViewObjects {
 	// Place to save the data
 	public static List<Object> data;
 	

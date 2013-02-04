@@ -13,40 +13,46 @@ import java.util.List;
 
 public class data2DSquare {
 	// Place to save the data
-	public static List<Object> data;
+	public static List<Object> data_x;
+	public static List<Object> data_z;
+	public static List<Object> data_size;
 	
 	// Add an item/object to the datalist
-	public static void addData(Object object)
+	public static void addData(Object x,Object z,Object size)
 	{
 		// Add the data to the list
-		data.add(object);
+		data_x.add(x);
+		data_z.add(z);
+		data_size.add(size);
 	}
 	
 	// Remove an item/object from the datalist
 	public static void removeData(int index)
 	{
 		// Remove the data from the list
-		data.remove(index);
+		data_x.remove(index);
+		data_z.remove(index);
+		data_size.remove(index);
 	}
 	
 	// Get an object from index
-	public static Object getData(int index)
+	public static Object getData_X(int index)
 	{
 		// Get an item from index
-		return data.get(index);
+		return data_x.get(index);
 	}
 	
-	// Check if an item is included
-	public static boolean contains(Object object)
+	// Get an object from index
+	public static Object getData_Z(int index)
 	{
-		// Check if data is available
-		return data.contains(object);
+		// Get an item from index
+		return data_z.get(index);
 	}
 	
-	// Get the index from the object/item
-	public static int getIndex(Object object)
+	// Get an object from index
+	public static Object getData_Size(int index)
 	{
-		// Get the index from the object
-		return data.indexOf(object);
+		// Get an item from index
+		return data_size.get(index);
 	}
 }
