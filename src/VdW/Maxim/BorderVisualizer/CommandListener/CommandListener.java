@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
 import VdW.Maxim.BorderVisualizer.Configuration.Config;
+import VdW.Maxim.BorderVisualizer.Events.PlayerViewEvent;
 import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendGame;
@@ -57,101 +58,16 @@ public class CommandListener implements CommandExecutor {
 			} else {
 				// Check argument
 				argument = arguments[0];
-				// --------------
-				if (argument.equalsIgnoreCase("townblock")) {
-					// Check if plugin is loaded
-					if (BorderVisualizer.Towny != null) {
-						// Check if player has permission
-						if (hasPermission("bordervisualizer.view.townblock",
-								player) == true) {
-							// Load visualizer
-							Visualize_Towny_TownBlock visualize = new Visualize_Towny_TownBlock(
-									plugin);
-							if (!BorderVisualizer.bv_players_towny_townblock
-									.contains(player)) {
-								// Show blocks
-								visualize.visualize_player(player, 1);
-							} else {
-								// Remove blocks
-								visualize.remove_player(player);
-							}
-						}
-					} else {
-						// Send message
-						SendGame.sendMessage(Messages.error_plugin_notfound
-								.replace("{PLUGIN}", "Towny"), player);
-					}
-				} else if (argument.equalsIgnoreCase("town")) {
-					// Check if plugin is loaded
-					if (BorderVisualizer.Towny != null) {
-						// Check if player has permission
-						if (hasPermission("bordervisualizer.view.town", player) == true) {
-							// Load visualizer
-							Visualize_Towny_Town visualize = new Visualize_Towny_Town(
-									plugin);
-							if (!BorderVisualizer.bv_players_towny_town
-									.contains(player)) {
-								// Show blocks
-								visualize.visualize_player(player, 1);
-							} else {
-								// Remove blocks
-								visualize.remove_player(player, null, 1);
-							}
-						}
-					} else {
-						// Send message
-						SendGame.sendMessage(Messages.error_plugin_notfound
-								.replace("{PLUGIN}", "Towny"), player);
-					}
-				} else if (argument.equalsIgnoreCase("chunk")) {
-					if (hasPermission("bordervisualizer.view.chunk", player) == true) {
-						// Load visualizer
-						Visualize_Chunk visualize = new Visualize_Chunk(plugin);
-						if (!BorderVisualizer.bv_players_chunk.contains(player)) {
-							// Show blocks
-							visualize.visualize_player(player, 1);
-						} else {
-							// Remove blocks
-							visualize.remove_player(player);
-						}
-					}
-				} else if (argument.equalsIgnoreCase("region")) {
-					// Check if plugin is loaded
-					if (BorderVisualizer.WorldGuard != null) {
-						// Check if player has permission
-						if (hasPermission("bordervisualizer.view.region",
-								player) == true) {
-							// Load visualizer
-							Visualize_WorldGuard_Region visualize = new Visualize_WorldGuard_Region(
-									plugin);
-							if (!BorderVisualizer.bv_players_worldguard_region
-									.contains(player)) {
-								if (arguments.length == 1) {
-									// Show blocks from position
-									visualize.visualize_player(player, 1, null);
-								} else {
-									// Show blocks from name
-									argument = arguments[1];
-									visualize.visualize_player(player, 1,
-											argument);
-								}
-							} else {
-								if (arguments.length == 1) {
-									// Remove blocks
-									visualize.remove_player(player, null, 0);
-								} else {
-									// Show blocks
-									argument = arguments[1];
-									visualize
-											.remove_player(player, argument, 0);
-								}
-							}
-						}
-					} else {
-						// Send message
-						SendGame.sendMessage(Messages.error_plugin_notfound
-								.replace("{PLUGIN}", "WorldGuard"), player);
-					}
+				
+				// Check for BorderVisualizer commands
+				
+				// Check if the argument equals a loaded view
+				PlayerViewEvent event = new PlayerViewEvent(plugin,argument,player,arguments[1]);
+			    
+				if (BorderVisualizer.bv_views.contains(argument))
+				{
+					// Raise PlayerViewEvent
+					
 				}
 			}
 		}else{

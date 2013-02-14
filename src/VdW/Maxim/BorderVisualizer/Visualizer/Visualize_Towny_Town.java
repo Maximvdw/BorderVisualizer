@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
 import VdW.Maxim.BorderVisualizer.Configuration.Config;
 import VdW.Maxim.BorderVisualizer.GenerateView.Generate_2D_Square;
+import VdW.Maxim.BorderVisualizer.GenerateView.Generate_2D_SquareFrame;
 import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendGame;
@@ -105,7 +106,7 @@ public class Visualize_Towny_Town {
 				Material block = Material.GLASS;
 
 				// Generate the 2D Walls
-				Generate_2D_Square generator = new Generate_2D_Square(plugin);
+				Generate_2D_SquareFrame generator = new Generate_2D_SquareFrame(plugin);
 				generator.generate(player, x,y, z, size, height, block,
 						ignore);
 				

@@ -30,12 +30,14 @@ import VdW.Maxim.BorderVisualizer.Configuration.Config;
 import VdW.Maxim.BorderVisualizer.Metrics.Metrics;
 import VdW.Maxim.BorderVisualizer.PlayerListener.PlayerListener_Movement;
 import VdW.Maxim.BorderVisualizer.PlayerListener.PlayerListener_Quit;
+import VdW.Maxim.BorderVisualizer.Visualizer.PlayerViewEventListener;
 
 public class BorderVisualizer extends JavaPlugin {
 	// Allow other classes to reach this class
 	public BorderVisualizer plugin = this;
 
-	// Lists to remember if players have used BorderVisualizer
+	// List all views in BorderVisualizer
+	public static ArrayList<String> bv_views = new ArrayList<String>();
 	public static ArrayList<Player> bv_players_chunk = new ArrayList<Player>(); // Stores
 																				// players
 																				// that
@@ -94,6 +96,8 @@ public class BorderVisualizer extends JavaPlugin {
 	// Listeners
 	private PlayerListener_Movement PlayerListener_MOVEMENT;
 	private PlayerListener_Quit PlayerListener_QUIT;
+	private PlayerViewEventListener ViewEventListener;
+	
 
 	public void onEnable() {
 		// Define the plugin Manager
@@ -130,6 +134,12 @@ public class BorderVisualizer extends JavaPlugin {
 		} catch (Exception ex) {
 		}
 
+		// Load Player view event Listener
+		try {
+			ViewEventListener = new PlayerViewEventListener(this);
+		} catch (Exception ex) {
+		}
+		
 		// Load Player movement listener
 		if (Config.allowPlayerMoveEvent) {
 			try {

@@ -12,5 +12,4 @@ package VdW.Maxim.BorderVisualizer.GenerateView;
 public class ViewTypes {
 	public static int VIEW_GLASS_WALL = 0;
 	public static int VIEW_GLASS_FRAME = 1;
-	public static int VIEW_GLASS_CORNERS = 2;
 }

@@ -23,6 +23,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
 import VdW.Maxim.BorderVisualizer.Configuration.Config;
 import VdW.Maxim.BorderVisualizer.GenerateView.Generate_3D_Cuboid;
+import VdW.Maxim.BorderVisualizer.GenerateView.Generate_3D_CuboidFrame;
 import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendGame;
@@ -93,7 +94,7 @@ public class Visualize_WorldGuard_Region {
 				// Block to replace the cuboid
 				Material block = Material.GLASS;
 				
-				Generate_3D_Cuboid generator = new Generate_3D_Cuboid(plugin);
+				Generate_3D_CuboidFrame generator = new Generate_3D_CuboidFrame(plugin);
 				generator.generate(player, x, y, z, x_size, y_size, z_size,
 						block, null);
 				
