@@ -18,8 +18,10 @@ import org.bukkit.entity.Player;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
 import VdW.Maxim.BorderVisualizer.Configuration.Config;
+import VdW.Maxim.BorderVisualizer.DataStore.SaveData;
 import VdW.Maxim.BorderVisualizer.GenerateView.Generate_2D_Square;
 import VdW.Maxim.BorderVisualizer.GenerateView.Generate_2D_SquareFrame;
+import VdW.Maxim.BorderVisualizer.GenerateView.View2DSquare;
 import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendGame;
@@ -37,12 +39,11 @@ public class Visualize_Towny_Town {
 		this.plugin = plugin;
 	}
 
-	public void visualize_player(Player player, int blockid) {
+	public void visualize(Player player,String viewName,int viewType, String displayName) {
 		/* DEBUG LOGGING */
 		if (Config.debugMode == true) {
 			SendConsole.info("EXEC: TOWNY_TOWN");
-			SendConsole.info("Starting VisualizePlayer:" + player.getName()
-					+ ";" + blockid);
+			SendConsole.info("Starting VisualizePlayer:" + player.getName());
 		}
 
 		// Save the player's location
@@ -62,6 +63,9 @@ public class Visualize_Towny_Town {
 		if (town != null) {
 			// Get all the townblocks
 			List<TownBlock> blocks = town.getTownBlocks();
+			View2DSquare[] squareBlocks = new View2DSquare[blocks.size()];
+			// Array with all townblock data
+			int i = 0;
 			for (TownBlock townBlock : blocks) {
 				// Get the size of a townblock
 				int size = Coord.getCellSize();
@@ -99,114 +103,20 @@ public class Visualize_Towny_Town {
 					SendConsole.info("Visualization data: TownBlock_z="
 							+ townBlock.getZ());
 				}
-
-				// Get the size and y position to show blocks
-				int height = (int)location.getY() + 20;
-				int y = 0;
-				Material block = Material.GLASS;
-
-				// Generate the 2D Walls
-				Generate_2D_SquareFrame generator = new Generate_2D_SquareFrame(plugin);
-				generator.generate(player, x,y, z, size, height, block,
-						ignore);
 				
 				// Save data
-				BorderVisualizer.bv_players_towny_town.add(player);
-				BorderVisualizer.bv_townName_towny_town.add("");
-				BorderVisualizer.bv_locations_towny_town.add(location);
+				View2DSquare townBlockView = new View2DSquare();
+				townBlockView.addData(x, z, size, ignore);
+				squareBlocks[i] = townBlockView;
+				i += 1;
 			}
-			// Send Message
-			SendGame.sendMessage(
-					Messages.config_visualized.replace("{VIEW}", "Town"), player);
+			
+			// Save the Square Block set
+			SaveData data = new SaveData(plugin);
+			data.save2DSquareSet(player, viewName, viewType, squareBlocks);
 		} else {
 			// Send message
 			SendGame.sendMessage(Messages.error_nolocation.replace("{VIEW}", "town"), player);
-		}
-	}
-
-	public void remove_player(Player player, String nextView, int blockid) {
-		/* DEBUG LOGGING */
-		if (Config.debugMode == true) {
-			SendConsole.info("EXEC: TOWNY_TOWN");
-			SendConsole.info("Starting RemovePlayer:" + player.getName());
-		}
-		// Get the players location before executing the command
-		int index = BorderVisualizer.bv_players_towny_town.indexOf(player);
-		String townName = BorderVisualizer.bv_townName_towny_town.get(index);
-		Location location = (Location) BorderVisualizer.bv_locations_towny_town
-				.get(index);
-
-		// Check if the player asked for 'A new region visualization'
-		if ((nextView != null) && (townName != nextView)) {
-			SendGame.sendMessage(
-					Messages.warning_nextview.replace("{VIEW}", "Town"), player);
-		}
-
-		// Remove the saved data
-		BorderVisualizer.bv_players_towny_town.remove(player);
-		BorderVisualizer.bv_locations_towny_town.remove(index);
-		BorderVisualizer.bv_townName_towny_town.remove(index);
-		
-		// Get the world of the player
-		World world = location.getWorld();
-		// Get the town of the player location
-		TownBlock current_TownBlock = TownyUniverse.getTownBlock(location);
-		Town town = null;
-		try {
-			town = current_TownBlock.getTown();
-		} catch (Exception ex) {
-		}
-
-		// Get all the townblocks
-		List<TownBlock> blocks = town.getTownBlocks();
-		for (TownBlock townBlock : blocks) {
-			// Get the size of a townblock
-			int size = Coord.getCellSize();
-			
-			// Check if there are townblocks next to it
-			boolean[] ignore = new boolean[4];
-			if (TownyUniverse.getTownBlock(new Location(world, (townBlock
-					.getX() + 1) * size, 0, (townBlock.getZ()) * size)) != null) {
-				ignore[0] = true;
-			}
-			if (TownyUniverse.getTownBlock(new Location(world, (townBlock
-					.getX()) * size, 0, (townBlock.getZ() + 1) * size)) != null) {
-				ignore[1] = true;
-			}
-			if (TownyUniverse.getTownBlock(new Location(world, (townBlock
-					.getX() - 1) * size, 0, (townBlock.getZ()) * size)) != null) {
-				ignore[2] = true;
-			}
-			if (TownyUniverse.getTownBlock(new Location(world, (townBlock
-					.getX()) * size, 0, (townBlock.getZ() - 1) * size)) != null) {
-				ignore[3] = true;
-			}
-
-			// Get location of the townblock
-			int x = size * townBlock.getX();
-			int z = size * townBlock.getZ();
-
-			/* DEBUG LOGGING */
-			if (Config.debugMode == true) {
-				SendConsole.info("Visualization data: TownBlockSize="
-						+ size);
-				SendConsole.info("Visualization data: Block_x=" + x);
-				SendConsole.info("Visualization data: Block_z=" + z);
-				SendConsole.info("Visualization data: TownBlock_x="
-						+ townBlock.getX());
-				SendConsole.info("Visualization data: TownBlock_z="
-						+ townBlock.getZ());
-			}
-
-			// Get the size and y position to show blocks
-			int height = (int)location.getY() + 20;
-			int y = 0;
-			Material block = Material.AIR;
-
-			// Generate the 2D Walls
-			Generate_2D_Square generator = new Generate_2D_Square(plugin);
-			generator.generate(player, x,y, z, size, height, block,
-					ignore);
 		}
 	}
 }

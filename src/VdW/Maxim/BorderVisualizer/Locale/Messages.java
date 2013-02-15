@@ -41,6 +41,8 @@ public class Messages {
 			"&e{PLAYER} was removed from list {LIST}!";
 	public static String warning_movement = 
 			"&c[!]&e {VIEW} visualization disabled because of movement.";
+	public static String warning_commandhook = 
+			"&eThe command '{COMMAND}' has already been registered! - {PLUGIN}";
 	/* END WARNING MESSAGES */
 	
 	

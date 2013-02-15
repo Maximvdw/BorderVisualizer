@@ -12,6 +12,5 @@ package VdW.Maxim.BorderVisualizer.GenerateView;
 public class ViewObjects {
 	public static int _2D_SQUARE = 0;
 	public static int _3D_CUBOID = 1;
-	public static int _2D_SQUAREFRAME = 2;
-	public static int _3D_CUBOIDFRAME = 3;
+	public static int _2D_SQUARESET = 2;
 }

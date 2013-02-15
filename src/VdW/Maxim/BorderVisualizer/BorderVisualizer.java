@@ -27,68 +27,23 @@ import com.palmergames.bukkit.towny.Towny;
 import VdW.Maxim.BorderVisualizer.CommandListener.CommandListener;
 import VdW.Maxim.BorderVisualizer.Configuration.BorderVisualizerConfiguration;
 import VdW.Maxim.BorderVisualizer.Configuration.Config;
+import VdW.Maxim.BorderVisualizer.DataStore.SaveData;
 import VdW.Maxim.BorderVisualizer.Metrics.Metrics;
 import VdW.Maxim.BorderVisualizer.PlayerListener.PlayerListener_Movement;
 import VdW.Maxim.BorderVisualizer.PlayerListener.PlayerListener_Quit;
-import VdW.Maxim.BorderVisualizer.Visualizer.PlayerViewEventListener;
+import VdW.Maxim.BorderVisualizer.RegisterView.RegisterView;
+import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Chunk;
+import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Towny_Town;
 
 public class BorderVisualizer extends JavaPlugin {
 	// Allow other classes to reach this class
 	public BorderVisualizer plugin = this;
 
 	// List all views in BorderVisualizer
-	public static ArrayList<String> bv_views = new ArrayList<String>();
-	public static ArrayList<Player> bv_players_chunk = new ArrayList<Player>(); // Stores
-																				// players
-																				// that
-																				// used
-																				// it
-	public static ArrayList<Location> bv_locations_chunk = new ArrayList<Location>(); // Stores
-																						// the
-																						// location
-																						// when
-																						// used
-	public static ArrayList<Player> bv_players_towny_townblock = new ArrayList<Player>(); // Stores
-																							// players
-																							// that
-																							// used
-																							// it
-	public static ArrayList<Location> bv_locations_towny_townblock = new ArrayList<Location>(); // Stores
-																								// the
-																								// location
-																								// when
-																								// used
-	public static ArrayList<Player> bv_players_towny_town = new ArrayList<Player>(); // Stores
-																						// players
-																						// that
-																						// used
-																						// it
-	public static ArrayList<String> bv_townName_towny_town = new ArrayList<String>(); // Stores
-																						// the
-																						// location
-																						// when
-																						// used
-	public static ArrayList<Location> bv_locations_towny_town = new ArrayList<Location>(); // Stores
-																							// the
-																							// location
-																							// when
-																							// used
-	public static ArrayList<Player> bv_players_worldguard_region = new ArrayList<Player>(); // Stores
-																							// players
-																							// that
-																							// used
-																							// it
-	public static ArrayList<String> bv_regionName_worldguard_region = new ArrayList<String>(); // Stores
-																								// the
-																								// location
-																								// when
-																								// used
-	public static ArrayList<Location> bv_locations_worldguard_region = new ArrayList<Location>(); // Stores
-																									// the
-																									// location
-																									// when
-																									// used
-
+	public static ArrayList<String> bv_view_name = new ArrayList<String>();
+	public static ArrayList<String> bv_view_command = new ArrayList<String>();
+	public static ArrayList<String> bv_view_plugin = new ArrayList<String>();
+	
 	// Load other plugins
 	public static WorldGuardPlugin WorldGuard;
 	public static Towny Towny;
@@ -96,8 +51,6 @@ public class BorderVisualizer extends JavaPlugin {
 	// Listeners
 	private PlayerListener_Movement PlayerListener_MOVEMENT;
 	private PlayerListener_Quit PlayerListener_QUIT;
-	private PlayerViewEventListener ViewEventListener;
-	
 
 	public void onEnable() {
 		// Define the plugin Manager
@@ -133,12 +86,6 @@ public class BorderVisualizer extends JavaPlugin {
 			}
 		} catch (Exception ex) {
 		}
-
-		// Load Player view event Listener
-		try {
-			ViewEventListener = new PlayerViewEventListener(this);
-		} catch (Exception ex) {
-		}
 		
 		// Load Player movement listener
 		if (Config.allowPlayerMoveEvent) {
@@ -164,6 +111,11 @@ public class BorderVisualizer extends JavaPlugin {
 			config.firstRun();
 		} catch (Exception ex) {
 		}
+		
+		RegisterView.add("Chunk", "chunk", "BorderVisualizer");
+		RegisterView.add("Town Block", "townblock", "BorderVisualizer");
+		RegisterView.add("Town", "town", "BorderVisualizer");
+		RegisterView.add("Region", "region", "BorderVisualizer");
 	}
 
 	public void onDisable() {
@@ -177,5 +129,13 @@ public class BorderVisualizer extends JavaPlugin {
 		CommandListener cmdExec = new CommandListener(
 				plugin);
 		return cmdExec.onCommand(sender, command,label, args);
+	}
+	
+	/* BorderVisualizer Hook | There functions get executed on player view */
+	public boolean visualize(Player player,String viewName,int viewType, String displayName)
+	{
+		Visualize_Towny_Town visualizer = new Visualize_Towny_Town(plugin);
+		visualizer.visualize(player, viewName, viewType, displayName);
+		return true;
 	}
 }

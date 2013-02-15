@@ -41,11 +41,12 @@ public class Generate_2D_Square {
 		
 		/* DEBUG LOGGING */
 		if (Config.debugMode == true) {
+			SendConsole.info("GENERATE 2D SQUARE WALL");
 			SendConsole.info("Distance X: " + x_distance);
 			SendConsole.info("Distance Z: " + z_distance);
 		}
 		
-		if (x_distance < 100+size_sides || z_distance < 100+size_sides)
+		if (x_distance < 300+size_sides || z_distance < 300+size_sides)
 		{
 			// Run the render on a diffrent thread
 			plugin.getServer().getScheduler()

@@ -18,9 +18,12 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
 import VdW.Maxim.BorderVisualizer.Configuration.Config;
+import VdW.Maxim.BorderVisualizer.DataStore.dataLocation;
+import VdW.Maxim.BorderVisualizer.DataStore.dataPlayers;
 import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendGame;
+import VdW.Maxim.BorderVisualizer.Visualizer.Visualize;
 import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Chunk;
 import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Towny_Town;
 import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Towny_TownBlock;
@@ -43,72 +46,19 @@ public class PlayerListener_Movement implements Listener {
 		Location location = player.getLocation();
 
 		// Check if the player is in any list
-		if (BorderVisualizer.bv_players_chunk.contains(player)) {
+		if (dataPlayers.contains(player)) {
 			// Get the index of the player
-			int index = BorderVisualizer.bv_players_chunk.indexOf(player);
-			Location location_prev = (Location) BorderVisualizer.bv_locations_chunk
-					.get(index);
+			int index = dataPlayers.getIndex(player);
+			Location location_prev = (Location) dataLocation.getData(index);
 			if (checkLocationsEqual(location,location_prev) == false) {
 				// Show message
 				SendGame.sendMessage(
 						Messages.warning_movement.replace("{VIEW}", "Chunk"),
 						player);
-				// Delete view
-				Visualize_Chunk visualize = new Visualize_Chunk(plugin);
-				visualize.remove_player(player);
+				Visualize.deleteVisualize(plugin, player);
 			}
 		}
 
-		if (BorderVisualizer.bv_players_towny_townblock.contains(player)) {
-			// Get the index of the player
-			int index = BorderVisualizer.bv_players_towny_townblock
-					.indexOf(player);
-			Location location_prev = (Location) BorderVisualizer.bv_locations_towny_townblock
-					.get(index);
-			if (checkLocationsEqual(location,location_prev) == false) {
-				// Show message
-				SendGame.sendMessage(Messages.warning_movement.replace(
-						"{VIEW}", "Town Block"), player);
-				// Delete view
-				Visualize_Towny_TownBlock visualize = new Visualize_Towny_TownBlock(
-						plugin);
-				visualize.remove_player(player);
-			}
-		}
-
-		if (BorderVisualizer.bv_players_towny_town.contains(player)) {
-			// Get the index of the player
-			int index = BorderVisualizer.bv_players_towny_town.indexOf(player);
-			Location location_prev = (Location) BorderVisualizer.bv_locations_towny_town
-					.get(index);
-			if (checkLocationsEqual(location,location_prev) == false) {
-				// Show message
-				SendGame.sendMessage(
-						Messages.warning_movement.replace("{VIEW}", "Town"),
-						player);
-				// Delete view
-				Visualize_Towny_Town visualize = new Visualize_Towny_Town(
-						plugin);
-				visualize.remove_player(player,null,1);
-			}
-		}
-
-		if (BorderVisualizer.bv_players_worldguard_region.contains(player)) {
-			// Get the index of the player
-			int index = BorderVisualizer.bv_players_worldguard_region
-					.indexOf(player);
-			Location location_prev = (Location) BorderVisualizer.bv_locations_worldguard_region
-					.get(index);
-			if (checkLocationsEqual(location,location_prev) == false) {
-				// Show message
-				SendGame.sendMessage(Messages.warning_movement.replace(
-						"{VIEW}", "WorldGuard Region"), player);
-				// Delete view
-				Visualize_WorldGuard_Region visualize = new Visualize_WorldGuard_Region(
-						plugin);
-				visualize.remove_player(player, null, 0);
-			}
-		}
 	}
 
 	/* Check if two locations are equal to eachother */

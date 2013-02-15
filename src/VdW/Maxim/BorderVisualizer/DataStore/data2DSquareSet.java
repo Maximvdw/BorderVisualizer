@@ -11,8 +11,7 @@ package VdW.Maxim.BorderVisualizer.DataStore;
 
 import java.util.ArrayList;
 
-
-public class dataViewObjects {
+public class data2DSquareSet{
 	// Place to save the data
 	public static ArrayList<Object> data = new ArrayList<Object>();
 	

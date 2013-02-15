@@ -9,12 +9,13 @@
 
 package VdW.Maxim.BorderVisualizer.DataStore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class dataViewTypes {
 	// Place to save the data
-	public static List<Object> data;
+	public static ArrayList<Object> data = new ArrayList<Object>();
 	
 	// Add an item/object to the datalist
 	public static void addData(Object object)

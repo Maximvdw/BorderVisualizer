@@ -2,10 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="D:/Data/Maxim/Bureaublad/MineZilla/craftbukkit.jar"/>
-	<classpathentry kind="lib" path="D:/Data/Maxim/Bureaublad/MineZilla/plugins/Towny.jar"/>
-	<classpathentry kind="lib" path="D:/Data/Maxim/Bureaublad/MineZilla/plugins/WorldGuard.jar"/>
-	<classpathentry kind="lib" path="D:/Data/Maxim/Bureaublad/MineZilla/plugins/WorldEdit.jar"/>
-	<classpathentry kind="lib" path="D:/Data/Maxim/Bureaublad/MineZilla/plugins/Factions.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Maxim/Documents/Minecraft Development/craftbukkit.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Maxim/Documents/Minecraft Development/plugins/GriefPrevention.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Maxim/Documents/Minecraft Development/plugins/Towny.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Maxim/Documents/Minecraft Development/plugins/Vault.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Maxim/Documents/Minecraft Development/plugins/WorldEdit.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Maxim/Documents/Minecraft Development/plugins/WorldGuard.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

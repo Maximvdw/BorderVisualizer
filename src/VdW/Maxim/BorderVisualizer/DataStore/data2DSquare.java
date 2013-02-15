@@ -9,21 +9,23 @@
 
 package VdW.Maxim.BorderVisualizer.DataStore;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class data2DSquare {
 	// Place to save the data
-	public static List<Object> data_x;
-	public static List<Object> data_z;
-	public static List<Object> data_size;
+	public static ArrayList<Object> data_x = new ArrayList<Object>();
+	public static ArrayList<Object> data_z = new ArrayList<Object>();
+	public static ArrayList<Object> data_size = new ArrayList<Object>();
+	public static ArrayList<Object> data_ignore = new ArrayList<Object>();
 	
 	// Add an item/object to the datalist
-	public static void addData(Object x,Object z,Object size)
+	public static void addData(Object x,Object z,Object size, Object ignore)
 	{
 		// Add the data to the list
 		data_x.add(x);
 		data_z.add(z);
 		data_size.add(size);
+		data_ignore.add(ignore);
 	}
 	
 	// Remove an item/object from the datalist
@@ -40,6 +42,13 @@ public class data2DSquare {
 	{
 		// Get an item from index
 		return data_x.get(index);
+	}
+
+	// Get an object from index
+	public static Object getData_Ignore(int index)
+	{
+		// Get an item from index
+		return data_ignore.get(index);
 	}
 	
 	// Get an object from index

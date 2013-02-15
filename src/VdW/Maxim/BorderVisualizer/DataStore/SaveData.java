@@ -12,7 +12,11 @@ package VdW.Maxim.BorderVisualizer.DataStore;
 import org.bukkit.entity.Player;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
+import VdW.Maxim.BorderVisualizer.Configuration.Config;
+import VdW.Maxim.BorderVisualizer.GenerateView.View2DSquare;
 import VdW.Maxim.BorderVisualizer.GenerateView.ViewObjects;
+import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
+import VdW.Maxim.BorderVisualizer.Visualizer.Visualize;
 
 public class SaveData {
 	/* Get the plugin information from the main class */
@@ -23,17 +27,60 @@ public class SaveData {
 	}
 
 	// Save information about a 2D Square
-	public void save2DSquare(Player player, String view, int viewType,int x,int z,int size)
-	{
+	public void save2DSquare(Player player, String view, int viewType, int x,
+			int z, int size, boolean[] ignore) {
+		/* DEBUG LOGGING */
+		if (Config.debugMode == true) {
+			SendConsole.info("Saving 2D Square");
+			SendConsole.info("Player: " + player.getName());
+		}
+
 		// Check if Data does not contain the player name
-		if (!dataPlayers.contains(player))
-		{
+		// Add all data
+		if (!dataPlayers.contains(player)) {
 			// Add all data
 			dataPlayers.addData(player);
 			dataViews.addData(view);
 			dataViewTypes.addData(viewType);
 			dataViewObjects.addData(ViewObjects._2D_SQUARE);
-			data2DSquare.addData(x, z, size);
+			data2DSquare.addData(x, z, size, ignore);
+			dataLocation.addData(player.getLocation());
+		}
+	}
+	
+	// Save information about a 2D Square Set
+	public void save2DSquareSet(Player player, String view,int viewType, View2DSquare[] square) {
+		/* DEBUG LOGGING */
+		if (Config.debugMode == true) {
+			SendConsole.info("Saving 2D SquareSet");
+			SendConsole.info("Player: " + player.getName());
+		}
+
+		// Check if Data does not contain the player name
+		// Add all data
+		if (!dataPlayers.contains(player)) {
+			// Add all data
+			dataPlayers.addData(player);
+			dataViews.addData(view);
+			dataViewTypes.addData(viewType);
+			dataViewObjects.addData(ViewObjects._2D_SQUARESET);
+			data2DSquareSet.addData(square);
+			dataLocation.addData(player.getLocation());
+		}
+	}
+
+	// Save informatin about a 3D Cuboid
+	public void save3DCuboid(Player player, String view, int viewType,
+			int[] min, int[] max, boolean[] ignore) {
+		// Check if Data does not contain the player name
+		if (!dataPlayers.contains(player)) {
+			// Add all data
+			dataPlayers.addData(player);
+			dataLocation.addData(player.getLocation());
+			dataViews.addData(view);
+			dataViewTypes.addData(viewType);
+			dataViewObjects.addData(ViewObjects._3D_CUBOID);
+			data3DCuboid.addData(min, max);
 		}
 	}
 }
