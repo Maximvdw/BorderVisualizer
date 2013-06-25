@@ -18,16 +18,13 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
 import VdW.Maxim.BorderVisualizer.Configuration.Config;
+import VdW.Maxim.BorderVisualizer.DataStore.LoadData;
 import VdW.Maxim.BorderVisualizer.DataStore.dataLocation;
 import VdW.Maxim.BorderVisualizer.DataStore.dataPlayers;
 import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendGame;
 import VdW.Maxim.BorderVisualizer.Visualizer.Visualize;
-import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Chunk;
-import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Towny_Town;
-import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Towny_TownBlock;
-import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_WorldGuard_Region;
 
 public class PlayerListener_Movement implements Listener {
 	/* Get the plugin information from the main class */
@@ -52,8 +49,9 @@ public class PlayerListener_Movement implements Listener {
 			Location location_prev = (Location) dataLocation.getData(index);
 			if (checkLocationsEqual(location,location_prev) == false) {
 				// Show message
+				LoadData data = new LoadData(plugin);
 				SendGame.sendMessage(
-						Messages.warning_movement.replace("{VIEW}", "Chunk"),
+						Messages.warning_movement.replace("{VIEW}", data.getViewName(player)),
 						player);
 				Visualize.deleteVisualize(plugin, player);
 			}
@@ -88,7 +86,6 @@ public class PlayerListener_Movement implements Listener {
 			if (Config.debugMode == true) {
 				SendConsole.info("Returning FALSE for checkLocationsEqual");
 			}
-			
 			return false;
 		}
 	}

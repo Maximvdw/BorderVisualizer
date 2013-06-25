@@ -9,7 +9,6 @@
 
 package VdW.Maxim.BorderVisualizer.UserInterface;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import VdW.Maxim.BorderVisualizer.Configuration.Config;

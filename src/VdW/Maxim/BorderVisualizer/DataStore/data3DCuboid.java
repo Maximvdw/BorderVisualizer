@@ -10,7 +10,6 @@
 package VdW.Maxim.BorderVisualizer.DataStore;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class data3DCuboid {
 	// Place to save the data

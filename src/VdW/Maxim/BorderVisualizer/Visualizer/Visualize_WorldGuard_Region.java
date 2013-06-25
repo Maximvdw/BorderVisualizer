@@ -10,7 +10,6 @@
 package VdW.Maxim.BorderVisualizer.Visualizer;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -22,8 +21,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
 import VdW.Maxim.BorderVisualizer.Configuration.Config;
-import VdW.Maxim.BorderVisualizer.GenerateView.Generate_3D_Cuboid;
-import VdW.Maxim.BorderVisualizer.GenerateView.Generate_3D_CuboidFrame;
+import VdW.Maxim.BorderVisualizer.DataStore.SaveData;
 import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendGame;
@@ -36,13 +34,11 @@ public class Visualize_WorldGuard_Region {
 		this.plugin = plugin;
 	}
 
-	public void visualize(final Player player, int blockid,
-			final String regionName) {
+	public void visualize(Player player, String viewName, int viewType, String displayName) {
 		/* DEBUG LOGGING */
 		if (Config.debugMode == true) {
 			SendConsole.info("EXEC: WORLDGUARD_REGION");
-			SendConsole.info("Starting VisualizePlayer:" + player.getName()
-					+ ";" + blockid);
+			SendConsole.info("Starting VisualizePlayer:" + player.getName());
 		}
 		// Save the player's location
 		Location location = player.getLocation();
@@ -51,6 +47,7 @@ public class Visualize_WorldGuard_Region {
 		World world = location.getWorld();
 
 		// Get the region
+		String regionName = displayName;
 		WorldGuardPlugin wg = BorderVisualizer.WorldGuard;
 		RegionManager rm = wg.getRegionManager(world);
 		// Get the region
@@ -81,6 +78,15 @@ public class Visualize_WorldGuard_Region {
 			int y_size = (int) l1.getY() - (int) l0.getY();
 			int z_size = (int) l1.getZ() - (int) l0.getZ();
 
+			int[] min = new int[3];
+			int[] max = new int[3];
+			min[0] = x;
+			min[1] = y;
+			min[2] = z;
+			max[0] = x+x_size;
+			max[1] = y+y_size;
+			max[2] = z+z_size;
+			
 			/* DEBUG LOGGING */
 			if (Config.debugMode == true) {
 				SendConsole.info("Visualization data: RegionID=" + id);
@@ -90,7 +96,9 @@ public class Visualize_WorldGuard_Region {
 
 			if (tn.equalsIgnoreCase("cuboid")) {
 				// Generate the 3D cuboid
-				
+				// Save data
+				SaveData data = new SaveData(plugin);
+				data.save3DCuboid(player, viewName, viewType, min, max, null);
 				
 			} else {
 				// Not supported

@@ -27,8 +27,6 @@ public class Messages {
 			"&cUnable to copy the config files!";
 	public static String error_config_load = 
 			"&cAn error ocured while loading the config!";
-	public static String error_plugin_notfound = 
-			"&2[&fBorderVisualizer&2]&c The plugin {PLUGIN} was not found!";
 	public static String error_view_distance = 
 			"&cThe view is too far away from your position!";
 	/* END ERROR MESSAGES */

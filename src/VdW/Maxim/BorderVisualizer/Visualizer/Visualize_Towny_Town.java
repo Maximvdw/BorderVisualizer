@@ -12,15 +12,12 @@ package VdW.Maxim.BorderVisualizer.Visualizer;
 import java.util.List;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
 import VdW.Maxim.BorderVisualizer.Configuration.Config;
 import VdW.Maxim.BorderVisualizer.DataStore.SaveData;
-import VdW.Maxim.BorderVisualizer.GenerateView.Generate_2D_Square;
-import VdW.Maxim.BorderVisualizer.GenerateView.Generate_2D_SquareFrame;
 import VdW.Maxim.BorderVisualizer.GenerateView.View2DSquare;
 import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
@@ -55,7 +52,14 @@ public class Visualize_Towny_Town {
 		TownBlock current_TownBlock = TownyUniverse.getTownBlock(location);
 		Town town = null;
 		try {
-			town = current_TownBlock.getTown();
+			if (displayName != null)
+			{
+				town = TownyUniverse.getDataSource().getTown(displayName);
+			}
+			else
+			{
+				town = current_TownBlock.getTown();
+			}
 		} catch (Exception ex) {
 		}
 

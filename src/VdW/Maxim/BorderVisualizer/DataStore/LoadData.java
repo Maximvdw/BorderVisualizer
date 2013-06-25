@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
 import VdW.Maxim.BorderVisualizer.GenerateView.View2DSquare;
-import VdW.Maxim.BorderVisualizer.GenerateView.ViewObjects;
 
 public class LoadData {
 	/* Get the plugin information from the main class */
@@ -182,5 +181,71 @@ public class LoadData {
 			// Return result
 			return data;
 		}else{ return null; }
+	}
+	
+	// Load xmax for 3D CUBOID
+	public int get3D_CUBOID_xmax(Player player)
+	{
+		if (dataPlayers.contains(player))
+		{
+			// Now get the index of the item/player
+			int index = dataPlayers.getIndex(player);
+			return (int)data3DCuboid.getData_maxX(index);
+		}else{ return -1; }
+	}
+	
+	// Load ymax for 3D CUBOID
+	public int get3D_CUBOID_ymax(Player player)
+	{
+		if (dataPlayers.contains(player))
+		{
+			// Now get the index of the item/player
+			int index = dataPlayers.getIndex(player);
+			return (int)data3DCuboid.getData_maxY(index);
+		}else{ return -1; }
+	}
+	
+	// Load zmax for 3D CUBOID
+	public int get3D_CUBOID_zmax(Player player)
+	{
+		if (dataPlayers.contains(player))
+		{
+			// Now get the index of the item/player
+			int index = dataPlayers.getIndex(player);
+			return (int)data3DCuboid.getData_maxZ(index);
+		}else{ return -1; }
+	}
+	
+	// Load xmin for 3D CUBOID
+	public int get3D_CUBOID_xmin(Player player)
+	{
+		if (dataPlayers.contains(player))
+		{
+			// Now get the index of the item/player
+			int index = dataPlayers.getIndex(player);
+			return (int)data3DCuboid.getData_minX(index);
+		}else{ return -1; }
+	}
+	
+	// Load ymin for 3D CUBOID
+	public int get3D_CUBOID_ymin(Player player)
+	{
+		if (dataPlayers.contains(player))
+		{
+			// Now get the index of the item/player
+			int index = dataPlayers.getIndex(player);
+			return (int)data3DCuboid.getData_minY(index);
+		}else{ return -1; }
+	}
+	
+	// Load zmin for 3D CUBOID
+	public int get3D_CUBOID_zmin(Player player)
+	{
+		if (dataPlayers.contains(player))
+		{
+			// Now get the index of the item/player
+			int index = dataPlayers.getIndex(player);
+			return (int)data3DCuboid.getData_minZ(index);
+		}else{ return -1; }
 	}
 }

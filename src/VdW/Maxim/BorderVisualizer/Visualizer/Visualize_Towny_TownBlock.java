@@ -10,12 +10,12 @@
 package VdW.Maxim.BorderVisualizer.Visualizer;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
 import VdW.Maxim.BorderVisualizer.Configuration.Config;
-import VdW.Maxim.BorderVisualizer.GenerateView.Generate_2D_Square;
+import VdW.Maxim.BorderVisualizer.DataStore.SaveData;
+import VdW.Maxim.BorderVisualizer.GenerateView.View2DSquare;
 import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendGame;
@@ -32,12 +32,12 @@ public class Visualize_Towny_TownBlock {
 		this.plugin = plugin;
 	}
 
-	public void visualize(Player player, int blockid) {
+	public void visualize(Player player, String viewName, int viewType,
+			String displayName) {
 		/* DEBUG LOGGING */
 		if (Config.debugMode == true) {
 			SendConsole.info("EXEC: TOWNY_TOWNBLOCK");
-			SendConsole.info("Starting VisualizePlayer:" + player.getName()
-					+ ";" + blockid);
+			SendConsole.info("Starting VisualizePlayer:" + player.getName());
 		}
 
 		// Save the player's location
@@ -63,12 +63,17 @@ public class Visualize_Towny_TownBlock {
 				SendConsole.info("Visualization data: TownBlock_z="
 						+ townBlock.getZ());
 			}
+			View2DSquare townBlockView = new View2DSquare();
+			townBlockView.addData(x, z, size, null);
 
+			// Save the Square Block set
+			SaveData data = new SaveData(plugin);
+			data.save2DSquare(player, viewName, viewType, x, z, size, null);
 		} else {
 			// Send message
 			SendGame.sendMessage(
-					Messages.error_nolocation.replace("{VIEW}", "townblock"), player);
+					Messages.error_nolocation.replace("{VIEW}", "townblock"),
+					player);
 		}
 	}
-
 }

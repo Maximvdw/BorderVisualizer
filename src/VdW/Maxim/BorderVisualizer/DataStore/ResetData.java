@@ -9,13 +9,9 @@
 
 package VdW.Maxim.BorderVisualizer.DataStore;
 
-import java.util.ArrayList;
-
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
-import VdW.Maxim.BorderVisualizer.GenerateView.View2DSquare;
 import VdW.Maxim.BorderVisualizer.GenerateView.ViewObjects;
 
 public class ResetData {
@@ -47,5 +43,7 @@ public class ResetData {
 		{
 			data3DCuboid.removeData(index);
 		}
+		
+		dataViewObjects.removeData(index); // Remove object
 	}
 }

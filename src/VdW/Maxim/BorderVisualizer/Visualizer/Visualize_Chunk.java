@@ -11,16 +11,12 @@ package VdW.Maxim.BorderVisualizer.Visualizer;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
 import VdW.Maxim.BorderVisualizer.Configuration.Config;
 import VdW.Maxim.BorderVisualizer.DataStore.SaveData;
-import VdW.Maxim.BorderVisualizer.GenerateView.Generate_2D_Square;
-import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
-import VdW.Maxim.BorderVisualizer.UserInterface.SendGame;
 
 public class Visualize_Chunk {
 	/* Get the plugin information from the main class */

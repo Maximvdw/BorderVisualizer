@@ -1,7 +1,7 @@
 /* -----------------------------
  * Name: BorderVisualizer
  * Version: 1.0.0
- * Last edited: 31/01/2013
+ * Last edited: 25/06/2013
  * Author: Maxim Van de Wynckel
  * Nickname: Maximvdw
  * Copyright: 2013

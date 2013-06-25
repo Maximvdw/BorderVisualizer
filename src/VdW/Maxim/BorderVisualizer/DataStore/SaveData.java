@@ -16,7 +16,6 @@ import VdW.Maxim.BorderVisualizer.Configuration.Config;
 import VdW.Maxim.BorderVisualizer.GenerateView.View2DSquare;
 import VdW.Maxim.BorderVisualizer.GenerateView.ViewObjects;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
-import VdW.Maxim.BorderVisualizer.Visualizer.Visualize;
 
 public class SaveData {
 	/* Get the plugin information from the main class */

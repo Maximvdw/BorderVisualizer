@@ -16,6 +16,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
+import VdW.Maxim.BorderVisualizer.DataStore.LoadData;
+import VdW.Maxim.BorderVisualizer.DataStore.ResetData;
+import VdW.Maxim.BorderVisualizer.DataStore.dataPlayers;
 import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
 
@@ -33,16 +36,16 @@ public class PlayerListener_Quit implements Listener {
 		// Get Player name
 		Player player = e.getPlayer();
 
-	/*	// Check if the player is in any list
-		if (BorderVisualizer.bv_players_chunk.contains(player)) {
-			// Get the index of the player
-			int index = BorderVisualizer.bv_players_chunk.indexOf(player);
-			// Remove the saved data
-			BorderVisualizer.bv_players_chunk.remove(player);
-			BorderVisualizer.bv_locations_chunk.remove(index);
-			// Send message to console
+		// Check if the player is in any list
+		if (dataPlayers.contains(player)) {
+			// Show message
+			LoadData data = new LoadData(plugin);
 			SendConsole.warning(Messages.warning_player_quit.replace(
-					"{PLAYER}", player.getName()).replace("{LIST}", "Chunk"));
-		}*/
+					"{PLAYER}", player.getName()).replace("{LIST}",
+					data.getViewName(player)));
+			// Reset view
+			ResetData reset = new ResetData(plugin);
+			reset.resetAll(player);
+		}
 	}
 }

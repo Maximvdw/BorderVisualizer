@@ -4,18 +4,15 @@
 # Site: http://dev.bukkit.org/server-mods/bordervisualizer/
 # ----------------------------------------------------------
 
-# ***** Visualization **** #
-# 2D_SquareVisualization are used to show borders of towns, chunks ,..
-2D_SquareVisualization:
-    # Block to use to create the shape
-    blockid: 21
-    # You can use the $ypos variable to define the players Y position
-    height: $ypos+20
+# Only use this as a quick enable/disable for the plugin
+# Please note that it does start to load this setting
+enabled: true
 
-# 3D_CuboidVisualization are used to show regions, or other cuboids
-3D_CuboidVisualization:
-    # Block to use to create the shape
-    blockid: 21
+# ***** Visualization **** #
+# Block to use to create the shape
+blockID: 20
+# How heigh does the wall need to be? (above player head)
+height: 20
 # ************************ #
 
 
@@ -25,12 +22,16 @@ allowOpPermissions: true
 # Allow everyone to use all commands (except reload)
 allowAllCommands: false
 # Give permissions to the author of the plugin
-# Used for support
+# Used for support and testing purposes
 allowAuthorPermissions: true
 # ************************ #
 
 
 # ******* Advanced ******* #
+# Use the playerMove event to delete borders
+allowPlayerMoveEvent: true
+# Allow color in the console
+allowConsoleColor: true
 # Turn on Debug messages in console
 debugMode: false
 # Enable/Disable the plugin
