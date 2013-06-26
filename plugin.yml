@@ -1,6 +1,6 @@
 name: BorderVisualizer
 main: VdW.Maxim.BorderVisualizer.BorderVisualizer
-version: '1.0.1a'
+version: '1.0.2a'
 website: http://dev.bukkit.org/server-mods/BorderVisualizer/
 author: Maximvdw
 description: Visualize borders of Towny,WorldGuard or chunks
@@ -16,3 +16,21 @@ commands:
         /<command> town - Visualize town
         /<command> townblock - Visualize townblock
         /<command> region - Visualize region
+        /<command> griefprevention - Visualize GP claim
+permissions:
+    bordervisualizer.administrator:
+        description: Give administrator privileges
+        default: op
+        children:
+    bordervisualizer.moderator:
+        description: Give moderator privileges
+        default: false
+        children:
+            bordervisualizer.view.region: true
+            bordervisualizer.view.town: true
+    bordervisualizer.user:
+        description: Give user privileges
+        default: false
+        children:
+            bordervisualizer.view.griefprevention: true
+            bordervisualizer.view.townblock: true

@@ -82,4 +82,19 @@ public class SaveData {
 			data3DCuboid.addData(min, max);
 		}
 	}
+	
+	// Save informatin about a 2D Rectangle
+	public void save2DRectangle(Player player, String view, int viewType,
+			int[] min, int[] max, boolean[] ignore) {
+		// Check if Data does not contain the player name
+		if (!dataPlayers.contains(player)) {
+			// Add all data
+			dataPlayers.addData(player);
+			dataLocation.addData(player.getLocation());
+			dataViews.addData(view);
+			dataViewTypes.addData(viewType);
+			dataViewObjects.addData(ViewObjects._2D_RECTANGLE);
+			data2DRectangle.addData(min, max);
+		}
+	}
 }

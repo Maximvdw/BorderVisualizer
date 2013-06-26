@@ -248,4 +248,48 @@ public class LoadData {
 			return (int)data3DCuboid.getData_minZ(index);
 		}else{ return -1; }
 	}
+	
+	// Load xmax for 3D CUBOID
+	public int get2D_RECTANGLE_xmax(Player player)
+	{
+		if (dataPlayers.contains(player))
+		{
+			// Now get the index of the item/player
+			int index = dataPlayers.getIndex(player);
+			return (int)data2DRectangle.getData_maxX(index);
+		}else{ return -1; }
+	}
+	
+	// Load zmax for 3D CUBOID
+	public int get2D_RECTANGLE_zmax(Player player)
+	{
+		if (dataPlayers.contains(player))
+		{
+			// Now get the index of the item/player
+			int index = dataPlayers.getIndex(player);
+			return (int)data2DRectangle.getData_maxZ(index);
+		}else{ return -1; }
+	}
+	
+	// Load xmin for 3D CUBOID
+	public int get2D_RECTANGLE_xmin(Player player)
+	{
+		if (dataPlayers.contains(player))
+		{
+			// Now get the index of the item/player
+			int index = dataPlayers.getIndex(player);
+			return (int)data2DRectangle.getData_minX(index);
+		}else{ return -1; }
+	}
+	
+	// Load zmin for 3D CUBOID
+	public int get2D_RECTANGLE_zmin(Player player)
+	{
+		if (dataPlayers.contains(player))
+		{
+			// Now get the index of the item/player
+			int index = dataPlayers.getIndex(player);
+			return (int)data2DRectangle.getData_minZ(index);
+		}else{ return -1; }
+	}
 }

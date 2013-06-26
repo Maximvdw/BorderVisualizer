@@ -24,6 +24,7 @@ import VdW.Maxim.BorderVisualizer.UserInterface.SendGame;
 import VdW.Maxim.BorderVisualizer.Visualizer.Visualize;
 import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Available;
 import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Chunk;
+import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_GriefPrevention_Claim;
 import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Towny_Town;
 import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_Towny_TownBlock;
 import VdW.Maxim.BorderVisualizer.Visualizer.Visualize_WorldGuard_Region;
@@ -80,7 +81,7 @@ public class CommandListener implements CommandExecutor {
 				// Get additional arguments
 				int viewType = ViewTypes.VIEW_GLASS_WALL;
 				String displayName = null;
-				for (int i = 1; i <= 3; i++) {
+				for (int i = 1; i <= 4; i++) {
 					try {
 						/* DEBUG LOGGING */
 						if (Config.debugMode == true) {
@@ -89,10 +90,10 @@ public class CommandListener implements CommandExecutor {
 						}
 
 						// Check the arguments
-						if (arguments[i].equalsIgnoreCase("wall")) {
+						if (arguments[i].equalsIgnoreCase("-w")) {
 							// Set the viewType to wall
 							viewType = ViewTypes.VIEW_GLASS_WALL;
-						} else if (arguments[i].equalsIgnoreCase("frame")) {
+						} else if (arguments[i].equalsIgnoreCase("-f")) {
 							// Set the viewType to frame
 							viewType = ViewTypes.VIEW_GLASS_FRAME;
 						} else {
@@ -144,6 +145,15 @@ public class CommandListener implements CommandExecutor {
 								viewType, displayName);
 						Visualize.createVisualize(plugin, player,
 								"WorldGuard Region", viewType, displayName);
+					}
+				} else if (argument.equalsIgnoreCase("griefprevention")) {
+					if (hasPermission("bordervisualizer.view.griefprevention", player)) {
+						Visualize_GriefPrevention_Claim visualizer = new Visualize_GriefPrevention_Claim(
+								plugin);
+						visualizer.visualize(player, "GriefPrevention Claim",
+								viewType, displayName);
+						Visualize.createVisualize(plugin, player,
+								"GriefPrevention Claim", viewType, displayName);
 					}
 				}
 			}

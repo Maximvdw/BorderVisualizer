@@ -34,11 +34,11 @@ public class Messages {
 	
 	/* WARNING MESSAGES */
 	public static String warning_nextview =
-			"&c[!]&e Removed previous {VIEW} visualization!";
+			"&c[!]&e Removed previous {VIEW} border!";
 	public static String warning_player_quit = 
 			"&e{PLAYER} was removed from list {LIST}!";
 	public static String warning_movement = 
-			"&c[!]&e {VIEW} visualization disabled because of movement.";
+			"&c[!]&e {VIEW} border disabled because of movement.";
 	public static String warning_commandhook = 
 			"&eThe command '{COMMAND}' has already been registered! - {PLUGIN}";
 	public static String warning_forcereload = 

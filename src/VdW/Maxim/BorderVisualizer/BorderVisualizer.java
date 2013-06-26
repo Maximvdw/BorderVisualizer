@@ -148,7 +148,7 @@ public class BorderVisualizer extends JavaPlugin {
 		}
 		try {
 			Config.blockHeight = BorderVisualizerConfiguration.config
-					.getInt("blockHeight");
+					.getInt("height");
 		} catch (Exception ex) {
 			// Could not load that setting
 		}

@@ -41,23 +41,26 @@ public class Visualize_GriefPrevention_Claim {
 			SendConsole.info("EXEC: GriefPrevention_CLAIM");
 			SendConsole.info("Starting VisualizePlayer:" + player.getName());
 		}
-		
+
 		// Save the player's location
 		Location location = player.getLocation();
-				
+
 		// Get the claim at the players location
-		GriefPrevention gp = null;
+		GriefPrevention gp = BorderVisualizer.GriefPrevention;
 		DataStore ds = gp.dataStore;
 		Claim cl = ds.getClaimAt(location, false, null);
 		// Check if townBlock exist
 		if (cl != null) {
-			// Get the size of a townblock
+			int[] min = new int[2];
+			int[] max = new int[2];
+			min[0] = (int) cl.getLesserBoundaryCorner().getX();
+			min[1] = (int) cl.getLesserBoundaryCorner().getZ();
+			max[0] = (int) cl.getGreaterBoundaryCorner().getX();
+			max[1] = (int) cl.getGreaterBoundaryCorner().getZ();
 			
-			View2DSquare townBlockView = new View2DSquare();
-			townBlockView.addData(x, z, size, null);
-
-			// Save the Square Block set
+			// Save 2D Rectangle data
 			SaveData data = new SaveData(plugin);
-			//data.save2DSquare(player, viewName, viewType, x, z, size, null);
+			data.save2DRectangle(player, viewName, viewType, min, max, null);
+		}
 	}
 }

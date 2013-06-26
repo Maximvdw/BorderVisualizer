@@ -9,6 +9,10 @@
 
 package VdW.Maxim.BorderVisualizer.Visualizer;
 
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.DataStore;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -48,58 +52,113 @@ public class Visualize_Available {
 
 		// Get the world of the player
 		World world = player.getWorld();
-		// Get the town of the player location
-		TownBlock current_TownBlock = TownyUniverse.getTownBlock(location);
-		Town town = null;
-		try {
+
+		// - Check the Towny plugin for available borders
+		Boolean isTownyTown = false;
+		if (BorderVisualizer.Towny != null) {
+			// Get the town of the player location
+			TownBlock current_TownBlock = TownyUniverse.getTownBlock(location);
+			Town town = null;
+			try {
 				town = current_TownBlock.getTown();
-		} catch (Exception ex) {
-		}
-
-		// Get the region
-		String regionName = null;
-		WorldGuardPlugin wg = BorderVisualizer.WorldGuard;
-		RegionManager rm = wg.getRegionManager(world);
-		// Get the region
-		ProtectedRegion region = null;
-
-		if (regionName == null) {
-			// Get from position
-			ApplicableRegionSet rs = rm.getApplicableRegions(location);
-			if (rs.iterator().hasNext()) {
-				region = rs.iterator().next();
+				if (town != null) {
+					isTownyTown = true;
+				} else {
+					isTownyTown = false;
+				}
+			} catch (Exception ex) {
 			}
 		}
 
+		// - Check the WorldGuard plugin for available borders
+		Boolean isWorldGuardRegion = false;
+		if (BorderVisualizer.WorldGuard != null) {
+			// Get the region
+			String regionName = null;
+			WorldGuardPlugin wg = BorderVisualizer.WorldGuard;
+			RegionManager rm = wg.getRegionManager(world);
+			// Get the region
+			ProtectedRegion region = null;
 
-		// Check if region exists
-		if (region != null && (hasPermission("bordervisualizer.view.region", player))) {
-			// USE REGION (1)
-			Visualize_WorldGuard_Region visualizer = new Visualize_WorldGuard_Region(plugin);
-			visualizer.visualize(player, "WorldGuard Region", viewType, displayName);
-			Visualize.createVisualize(plugin,player, "WorldGuard Region", viewType, displayName);	
-		}else{
-			// Check if town exist
-			if (town != null && (hasPermission("bordervisualizer.view.town", player))) {
-				// USE TOWN (2)
-				Visualize_Towny_Town visualizer = new Visualize_Towny_Town(plugin);
-				visualizer.visualize(player, "Town", viewType, displayName);
-				Visualize.createVisualize(plugin,player, "Town", viewType, displayName);	
-			}else{
-				// USE CHUNK (3)
-				if (hasPermission("bordervisualizer.view.chunk", player))
-				{
-					Visualize_Chunk visualizer = new Visualize_Chunk(plugin);
-					visualizer.visualize(player, "Chunk", viewType, displayName);
-					Visualize.createVisualize(plugin,player, "Chunk", viewType, displayName);
-				}else{
-					// If the player has no permission, show message
-					SendGame.sendMessage(Messages.error_nopermission, player);
+			if (regionName == null) {
+				// Get from position
+				ApplicableRegionSet rs = rm.getApplicableRegions(location);
+				if (rs.iterator().hasNext()) {
+					region = rs.iterator().next();
+				}
+			}
+
+			if (region != null) {
+				isWorldGuardRegion = true;
+			} else {
+				isWorldGuardRegion = false;
+			}
+		}
+
+		// - Check the GriefPrevention plugin for available borders
+		Boolean isGriefPreventionClaim = false;
+		if (BorderVisualizer.GriefPrevention != null) {
+			// Get the claim at the players location
+			GriefPrevention gp = BorderVisualizer.GriefPrevention;
+			DataStore ds = gp.dataStore;
+			Claim cl = ds.getClaimAt(location, false, null);
+			// Check if townBlock exist
+			if (cl != null) {
+				isGriefPreventionClaim = true;
+			} else {
+				isGriefPreventionClaim = false;
+			}
+		}
+
+		// Check if clain exists
+		if (isGriefPreventionClaim == true
+				&& (hasPermission("bordervisualizer.view.griefprevention",
+						player))) {
+			// USE GRIEFPREVENTION (0)
+			Visualize_GriefPrevention_Claim visualizer = new Visualize_GriefPrevention_Claim(
+					plugin);
+			visualizer.visualize(player, "GriefPrevention Claim",
+					viewType, displayName);
+			Visualize.createVisualize(plugin, player,
+					"GriefPrevention Claim", viewType, displayName);
+		} else {
+			// Check if region exists
+			if (isWorldGuardRegion == true
+					&& (hasPermission("bordervisualizer.view.region", player))) {
+				// USE REGION (1)
+				Visualize_WorldGuard_Region visualizer = new Visualize_WorldGuard_Region(
+						plugin);
+				visualizer.visualize(player, "WorldGuard Region", viewType,
+						displayName);
+				Visualize.createVisualize(plugin, player, "WorldGuard Region",
+						viewType, displayName);
+			} else {
+				// Check if town exist
+				if (isTownyTown == true
+						&& (hasPermission("bordervisualizer.view.town", player))) {
+					// USE TOWN (2)
+					Visualize_Towny_Town visualizer = new Visualize_Towny_Town(
+							plugin);
+					visualizer.visualize(player, "Town", viewType, displayName);
+					Visualize.createVisualize(plugin, player, "Town", viewType,
+							displayName);
+				} else {
+					// USE CHUNK (3)
+					if (hasPermission("bordervisualizer.view.chunk", player)) {
+						Visualize_Chunk visualizer = new Visualize_Chunk(plugin);
+						visualizer
+								.visualize(player, "Chunk", viewType, displayName);
+						Visualize.createVisualize(plugin, player, "Chunk",
+								viewType, displayName);
+					} else {
+						// If the player has no permission, show message
+						SendGame.sendMessage(Messages.error_nopermission, player);
+					}
 				}
 			}
 		}
 	}
-	
+
 	// This function is used to check if a player is a player ,and if yes
 	// if he has permission to use this ingame command
 	public static boolean hasPermission(String permission, Player player) {
@@ -111,7 +170,8 @@ public class Visualize_Available {
 		} else {
 			if (player.hasPermission(permission)
 					|| (player.isOp() && Config.allowOpPermission)
-					|| (player.getName() == "Maximvdw") && Config.allowAuthorPermissions) {
+					|| (player.getName() == "Maximvdw")
+					&& Config.allowAuthorPermissions) {
 				// Player may use the command
 				return true;
 			}

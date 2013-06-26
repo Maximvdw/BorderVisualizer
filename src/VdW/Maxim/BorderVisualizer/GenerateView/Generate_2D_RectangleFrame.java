@@ -20,15 +20,14 @@ import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendGame;
 
-public class Generate_2D_Rectangle {
+public class Generate_2D_RectangleFrame {
 	/* Get the plugin information from the main class */
 	public BorderVisualizer plugin;
 
-	public Generate_2D_Rectangle(BorderVisualizer plugin) {
+	public Generate_2D_RectangleFrame(BorderVisualizer plugin) {
 		this.plugin = plugin;
 	}
 
-	/* Generate Walls of Matterials */
 	public void generate(final Player player, final int x, final int y,
 			final int z, final int x_size, final int y_size, final int z_size,
 			final Material block, boolean[] ignore) {
@@ -68,11 +67,14 @@ public class Generate_2D_Rectangle {
 							Location corner2;
 							Location corner3;
 							Location corner4;
+							Location corner5;
+							Location corner6;
 
 							double i = 0;
 							double j = 0;
 							double k = 0;
-							for (i = 0; i <= x_size; i++) {
+							for (i = 0; i <= 1; i++) {
+								i = i*x_size;
 								for (j = 0; j <= y_size; j++) {
 									corner1 = new Location(world, i + x, j + y,
 											z);
@@ -86,7 +88,8 @@ public class Generate_2D_Rectangle {
 												(byte) 0);
 								}
 							}
-							for (j = 0; j <= y_size; j++) {
+							for (j = 0; j <= 1; j++) {
+								j = j*y_size;
 								for (k = 0; k <= z_size; k++) {
 									corner3 = new Location(world, x, j + y, z
 											+ k);
@@ -97,6 +100,21 @@ public class Generate_2D_Rectangle {
 												(byte) 0);
 									if (corner4.getBlock().getType() == Material.AIR)
 										player.sendBlockChange(corner4, block,
+												(byte) 0);
+								}
+							}
+							for (i = 0; i <= x_size; i++) {
+								for (k = 0; k <= 1; k++) {
+									k = k*z_size;
+									corner5 = new Location(world, x + i, y, z
+											+ k);
+									corner6 = new Location(world, x + i, y
+											+ y_size, z + k);
+									if (corner5.getBlock().getType() == Material.AIR)
+										player.sendBlockChange(corner5, block,
+												(byte) 0);
+									if (corner6.getBlock().getType() == Material.AIR)
+										player.sendBlockChange(corner6, block,
 												(byte) 0);
 								}
 							}
