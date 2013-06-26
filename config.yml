@@ -13,6 +13,10 @@ enabled: true
 blockID: 20
 # How heigh does the wall need to be? (above player head)
 height: 20
+# Default views
+# Choose between "wall" and "frame"
+square: wall
+cuboid: frame
 # ************************ #
 
 
@@ -37,5 +41,5 @@ debugMode: false
 # Enable/Disable the plugin
 enabled: true
 # Config version (DO NOT EDIT)
-config: 0
+config: 1
 # ************************ #

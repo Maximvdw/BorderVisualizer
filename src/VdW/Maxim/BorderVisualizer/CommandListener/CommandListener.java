@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 
 import VdW.Maxim.BorderVisualizer.BorderVisualizer;
 import VdW.Maxim.BorderVisualizer.Configuration.Config;
+import VdW.Maxim.BorderVisualizer.DataStore.dataPlayers;
 import VdW.Maxim.BorderVisualizer.GenerateView.ViewTypes;
 import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
@@ -50,6 +51,14 @@ public class CommandListener implements CommandExecutor {
 		// Check if the player entered a valid command
 		if (cmd.equalsIgnoreCase("bv")
 				|| cmd.equalsIgnoreCase("bordervisualizer")) {
+			// Check if on list
+			if (dataPlayers.contains(player)) {
+				// Delete the view
+				SendGame.sendMessage(Messages.config_removed, player); // Show message to confirm
+				Visualize.deleteVisualize(plugin, player);
+				return true;
+			}
+			
 			// Check arguments
 			if (arguments.length == 0) {
 				// Visualize the border the player is in
@@ -60,7 +69,8 @@ public class CommandListener implements CommandExecutor {
 				String displayName = null;
 
 				Visualize_Available visualizer = new Visualize_Available(plugin);
-				visualizer.visualize(player, "Available", viewType, displayName);	
+				visualizer
+						.visualize(player, "Available", viewType, displayName);
 			} else {
 				// Check argument
 				argument = arguments[0];
@@ -98,39 +108,42 @@ public class CommandListener implements CommandExecutor {
 
 					}
 				}
-				
+
 				// Check for the view
-				if (argument.equalsIgnoreCase("town"))
-				{
-					if (hasPermission("bordervisualizer.view.town", player))
-					{
-						Visualize_Towny_Town visualizer = new Visualize_Towny_Town(plugin);
-						visualizer.visualize(player, "Town", viewType, displayName);
-						Visualize.createVisualize(plugin,player, "Town", viewType, displayName);	
+				if (argument.equalsIgnoreCase("town")) {
+					if (hasPermission("bordervisualizer.view.town", player)) {
+						Visualize_Towny_Town visualizer = new Visualize_Towny_Town(
+								plugin);
+						visualizer.visualize(player, "Town", viewType,
+								displayName);
+						Visualize.createVisualize(plugin, player, "Town",
+								viewType, displayName);
 					}
-				}else if (argument.equalsIgnoreCase("townblock"))
-				{
-					if (hasPermission("bordervisualizer.view.townblock", player))
-					{
-						Visualize_Towny_TownBlock visualizer = new Visualize_Towny_TownBlock(plugin);
-						visualizer.visualize(player, "Town Block", viewType, displayName);
-						Visualize.createVisualize(plugin,player, "Town Block", viewType, displayName);	
+				} else if (argument.equalsIgnoreCase("townblock")) {
+					if (hasPermission("bordervisualizer.view.townblock", player)) {
+						Visualize_Towny_TownBlock visualizer = new Visualize_Towny_TownBlock(
+								plugin);
+						visualizer.visualize(player, "Town Block", viewType,
+								displayName);
+						Visualize.createVisualize(plugin, player, "Town Block",
+								viewType, displayName);
 					}
-				}else if (argument.equalsIgnoreCase("chunk"))
-				{
-					if (hasPermission("bordervisualizer.view.chunk", player))
-					{
+				} else if (argument.equalsIgnoreCase("chunk")) {
+					if (hasPermission("bordervisualizer.view.chunk", player)) {
 						Visualize_Chunk visualizer = new Visualize_Chunk(plugin);
-						visualizer.visualize(player, "Chunk", viewType, displayName);
-						Visualize.createVisualize(plugin,player, "Chunk", viewType, displayName);	
+						visualizer.visualize(player, "Chunk", viewType,
+								displayName);
+						Visualize.createVisualize(plugin, player, "Chunk",
+								viewType, displayName);
 					}
-				}else if (argument.equalsIgnoreCase("region"))
-				{
-					if (hasPermission("bordervisualizer.view.region", player))
-					{
-						Visualize_WorldGuard_Region visualizer = new Visualize_WorldGuard_Region(plugin);
-						visualizer.visualize(player, "WorldGuard Region", viewType, displayName);
-						Visualize.createVisualize(plugin,player, "WorldGuard Region", viewType, displayName);	
+				} else if (argument.equalsIgnoreCase("region")) {
+					if (hasPermission("bordervisualizer.view.region", player)) {
+						Visualize_WorldGuard_Region visualizer = new Visualize_WorldGuard_Region(
+								plugin);
+						visualizer.visualize(player, "WorldGuard Region",
+								viewType, displayName);
+						Visualize.createVisualize(plugin, player,
+								"WorldGuard Region", viewType, displayName);
 					}
 				}
 			}
@@ -152,7 +165,8 @@ public class CommandListener implements CommandExecutor {
 		} else {
 			if (player.hasPermission(permission)
 					|| (player.isOp() && Config.allowOpPermission)
-					|| (player.getName() == "Maximvdw") && Config.allowAuthorPermissions) {
+					|| (player.getName() == "Maximvdw")
+					&& Config.allowAuthorPermissions) {
 				// Player may use the command
 				return true;
 			}

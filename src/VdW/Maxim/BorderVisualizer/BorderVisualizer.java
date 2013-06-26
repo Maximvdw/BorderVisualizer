@@ -9,52 +9,94 @@
 
 package VdW.Maxim.BorderVisualizer;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import com.palmergames.bukkit.towny.Towny;
 
 import VdW.Maxim.BorderVisualizer.CommandListener.CommandListener;
 import VdW.Maxim.BorderVisualizer.Configuration.BorderVisualizerConfiguration;
 import VdW.Maxim.BorderVisualizer.Configuration.Config;
+import VdW.Maxim.BorderVisualizer.DataStore.LoadData;
+import VdW.Maxim.BorderVisualizer.DataStore.ResetData;
+import VdW.Maxim.BorderVisualizer.DataStore.dataPlayers;
+import VdW.Maxim.BorderVisualizer.Locale.Messages;
 import VdW.Maxim.BorderVisualizer.Metrics.Metrics;
 import VdW.Maxim.BorderVisualizer.PlayerListener.PlayerListener_Movement;
 import VdW.Maxim.BorderVisualizer.PlayerListener.PlayerListener_Quit;
 import VdW.Maxim.BorderVisualizer.UserInterface.SendConsole;
+import VdW.Maxim.BorderVisualizer.UserInterface.SendGame;
 
 public class BorderVisualizer extends JavaPlugin {
 	// Allow other classes to reach this class
 	public BorderVisualizer plugin = this;
 
 	// Load other plugins
-	public static WorldGuardPlugin WorldGuard;
-	public static Towny Towny;
+	public static WorldGuardPlugin WorldGuard; // WorldGuard plugin
+	public static Towny Towny; // Towny plugin
+	public static GriefPrevention GriefPrevention; // GriefPrevention plugin
+	
+	// Configuration
+	public static BorderVisualizerConfiguration BVconfig; // BorderVisualizer config
 
 	// Listeners
-	private PlayerListener_Movement PlayerListener_MOVEMENT;
-	private PlayerListener_Quit PlayerListener_QUIT;
+	private PlayerListener_Movement PlayerListener_MOVEMENT; // Player Move event
+	private PlayerListener_Quit PlayerListener_QUIT; // Player Quit event
 
+	// Constant variables
+	public static int configVersion = 1; // Latest configuration version
+	
 	public void onEnable() {
 		// Show Message
 		SendConsole.info("Initializing ...");
-
+		// CREDITS
+		SendConsole.info("-----------------------------");
+		SendConsole.info("BorderVisualizer v." + this.getDescription().getVersion());
+		SendConsole.info("(c) Maxim Van de Wynckel 2013");
+		SendConsole.info("-----------------------------");
+		// CREDITS
+		
 		// Load settings
 		SendConsole.info("Loading configuration ...");
 		try{
-			BorderVisualizerConfiguration config = new BorderVisualizerConfiguration(plugin);
-			config.firstRun();
-			config.loadYamls();
+			BVconfig = new BorderVisualizerConfiguration(plugin);
+			// Init Yaml config file
+			BorderVisualizerConfiguration.configFile = 
+					new File(getDataFolder(), "config.yml");
+			// Init Yaml config store
+			BorderVisualizerConfiguration.config = new YamlConfiguration();
+			BVconfig.firstRun();
+			BVconfig.loadYamls();
 		}catch(Exception ex){
 			// Critical error
 			SendConsole.severe("Could not load the configuration!");
 			SendConsole.severe("Using default configuration!");
+		}
+		
+		try {
+			int version = BorderVisualizerConfiguration.config
+					.getInt("config");
+			// Check if latest version
+			if (version!=configVersion){
+				// Update configuration
+				SendConsole.warning("config.yml outdated!");
+				BVconfig.update();
+				BVconfig.loadYamls();
+				SendConsole.warning("config.yml updated to version " + configVersion + "!");
+			}
+		} catch (Exception ex) {
+			// Could not load that setting
 		}
 		try {
 			Config.enabled = BorderVisualizerConfiguration.config
@@ -146,6 +188,18 @@ public class BorderVisualizer extends JavaPlugin {
 			}
 		} catch (Exception ex) {
 		}
+		
+		// Load GriefPrevention plugin if availabe
+		try {
+			Plugin p = pm.getPlugin("GriefPrevention");
+			if (p != null) {
+				GriefPrevention = (GriefPrevention) p;
+				// Display Hook message
+				getServer().getLogger().info(
+						"[GriefPrevention] Hooked into BorderVisualizer!");
+			}
+		} catch (Exception ex) {
+		}
 
 		// Load Player movement listener
 		if (Config.allowPlayerMoveEvent) {
@@ -165,7 +219,25 @@ public class BorderVisualizer extends JavaPlugin {
 	}
 
 	public void onDisable() {
-
+		// Show message
+		SendConsole.info("Checking for open border views...");
+		// Delete all open views
+		Player[] players = this.getServer().getOnlinePlayers();
+		// Now check every player for open view
+		for(Player player : players)
+		{
+			// Check if on list
+			if(dataPlayers.contains(player)){
+				// Delete view
+				LoadData data = new LoadData(plugin);
+				SendConsole.warning(Messages.warning_player_quit.replace(
+						"{PLAYER}", player.getName()).replace("{LIST}",
+						data.getViewName(player)));
+				ResetData reset = new ResetData(plugin);
+				reset.resetAll(player);
+				SendGame.sendMessage(Messages.warning_forcereload, player);
+			}
+		}
 	}
 
 	@Override

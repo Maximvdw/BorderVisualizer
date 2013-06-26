@@ -30,12 +30,11 @@ public class BorderVisualizerConfiguration {
 	}
 
 	// Configuration Files
-	public static File configFile;
-	public static FileConfiguration config;
+	public static File configFile = null;
+	public static FileConfiguration config = null;
 
 	public void firstRun() throws Exception {
 		try {
-
 			if (!configFile.exists()) {
 				configFile.getParentFile().mkdirs();
 				SendConsole.info(Messages.confirm_copy_config);
@@ -79,7 +78,6 @@ public class BorderVisualizerConfiguration {
 		} catch (Exception e) {
 			// Error in configuration
 			SendConsole.severe(Messages.error_config_load);
-			SendConsole.severe(e.getMessage());
 		}
 	}
 

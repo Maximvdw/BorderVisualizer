@@ -1,6 +1,6 @@
 name: BorderVisualizer
 main: VdW.Maxim.BorderVisualizer.BorderVisualizer
-version: '1.0.0a'
+version: '1.0.1a'
 website: http://dev.bukkit.org/server-mods/BorderVisualizer/
 author: Maximvdw
 description: Visualize borders of Towny,WorldGuard or chunks

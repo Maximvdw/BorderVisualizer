@@ -41,6 +41,9 @@ public class Messages {
 			"&c[!]&e {VIEW} visualization disabled because of movement.";
 	public static String warning_commandhook = 
 			"&eThe command '{COMMAND}' has already been registered! - {PLUGIN}";
+	public static String warning_forcereload = 
+			"&c[!]&e BorderVisualizer reloaded suddenly while your border was visible!\n" +
+			"&eThe border might still be visible, relog to remove it.";
 	/* END WARNING MESSAGES */
 	
 	
@@ -49,6 +52,8 @@ public class Messages {
 			"&aCopying config.yml file!";
 	public static String config_visualized = 
 			"&2[&fBorderVisualizer&2]&a Visualized {VIEW}.";
+	public static String config_removed = 
+			"&2[&fBorderVisualizer&2]&e Removed border.";
 	/* END CONFIRM MESSAGES */
 	
 	

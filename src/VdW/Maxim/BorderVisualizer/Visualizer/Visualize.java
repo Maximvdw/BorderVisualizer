@@ -50,7 +50,7 @@ public class Visualize {
 			boolean[] ignore = data.get2D_SQUARE_Ignore(player);
 			
 			// Config data
-			Material block = Material.GLASS;
+			Material block = Material.getMaterial(Config.blockID);
 			int ystart = 0;
 			int height = (int) (player.getLocation().getY() + 20);
 			
@@ -91,7 +91,7 @@ public class Visualize {
 				}
 				
 				// Config data
-				Material block = Material.GLASS;
+				Material block = Material.getMaterial(Config.blockID);
 				int ystart = 0;
 				int height = (int) (player.getLocation().getY() + 20);
 				
@@ -126,7 +126,7 @@ public class Visualize {
 			int zMax = data.get3D_CUBOID_zmax(player);
 			
 			// Config data
-			Material block = Material.GLASS;
+			Material block = Material.getMaterial(Config.blockID);
 			
 			// Generate the view
 			if (viewType == ViewTypes.VIEW_GLASS_WALL)
