@@ -1,7 +1,7 @@
 name: BorderVisualizer
-main: VdW.Maxim.BorderVisualizer.BorderVisualizer
-version: '1.0.2a'
-website: http://dev.bukkit.org/server-mods/BorderVisualizer/
+main: vdw.maxim.bordervisualizer.BorderVisualizer
+version: '1.0.3a'
+website: http://dev.bukkit.org/bukkit-mods/BorderVisualizer/
 author: Maximvdw
 description: Visualize borders of Towny,WorldGuard or chunks
 load: POSTWORLD
@@ -12,25 +12,36 @@ commands:
     aliases: [bv]
     usage: |
         /<command> help - Show extended help
+        /<command> about - Show plugin information
+        /<command> admin - Show admin help
         /<command> chunk - Visualize chunk
         /<command> town - Visualize town
         /<command> townblock - Visualize townblock
         /<command> region - Visualize region
+        /<command> regios - Visualize regios region
         /<command> griefprevention - Visualize GP claim
 permissions:
     bordervisualizer.administrator:
         description: Give administrator privileges
         default: op
         children:
+            bordervisualizer.reload: true
+            bordervisualizer.update: true
+            bordervisualizer.permissions: true
+            bordervisualizer.adminhelp: true
     bordervisualizer.moderator:
         description: Give moderator privileges
         default: false
         children:
-            bordervisualizer.view.region: true
-            bordervisualizer.view.town: true
+            bordervisualizer.worldguard.region: true
+            bordervisualizer.regios.region: true
+            bordervisualizer.towny.town: true
     bordervisualizer.user:
         description: Give user privileges
         default: false
         children:
-            bordervisualizer.view.griefprevention: true
-            bordervisualizer.view.townblock: true
+            bordervisualizer.griefprevention: true
+            bordervisualizer.towny.townblock: true
+            bordervisualizer.chunk: true
+            bordervisualizer.about: true
+            bordervisualizer.help: true

@@ -12,6 +12,9 @@ package vdw.maxim.bordervisualizer.visualizer;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import net.jzx7.regios.RegiosPlugin;
+import net.jzx7.regiosapi.RegiosAPI;
+import net.jzx7.regiosapi.regions.Region;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -22,6 +25,7 @@ import vdw.maxim.bordervisualizer.configuration.Config;
 import vdw.maxim.bordervisualizer.locale.Messages;
 import vdw.maxim.bordervisualizer.userinterface.SendConsole;
 import vdw.maxim.bordervisualizer.userinterface.SendGame;
+import vdw.maxim.bordervisualizer.utils.PermissionUtils;
 
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
@@ -31,7 +35,6 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
-
 public class Visualize_Available {
 	/* Get the plugin information from the main class */
 	public BorderVisualizer plugin;
@@ -40,8 +43,8 @@ public class Visualize_Available {
 		this.plugin = plugin;
 	}
 
-	public void visualize(Player player, Boolean allowMove , String viewName, int viewType,
-			String displayName) {
+	public void visualize(Player player, Boolean allowMove, String viewName,
+			int viewType, String displayName) {
 		/* DEBUG LOGGING */
 		if (Config.debugMode == true) {
 			SendConsole.info("EXEC: AVAILABLE");
@@ -71,22 +74,36 @@ public class Visualize_Available {
 			}
 		}
 
+		// - Check the Regios plugin for available borders
+		Boolean isRegiosRegion = false;
+		if (BorderVisualizer.Regios != null) {
+			// Get the region
+			RegiosPlugin regp = BorderVisualizer.Regios;
+			RegiosAPI regapi = regp; // Init regios api
+			Region region = null;
+			// Get from position
+			region = regapi.getRegion(location);
+			
+			if (region != null) {
+				isRegiosRegion = true;
+			} else {
+				isRegiosRegion = false;
+			}
+		}
+
 		// - Check the WorldGuard plugin for available borders
 		Boolean isWorldGuardRegion = false;
 		if (BorderVisualizer.WorldGuard != null) {
 			// Get the region
-			String regionName = null;
 			WorldGuardPlugin wg = BorderVisualizer.WorldGuard;
 			RegionManager rm = wg.getRegionManager(world);
 			// Get the region
 			ProtectedRegion region = null;
 
-			if (regionName == null) {
-				// Get from position
-				ApplicableRegionSet rs = rm.getApplicableRegions(location);
-				if (rs.iterator().hasNext()) {
-					region = rs.iterator().next();
-				}
+			// Get from position
+			ApplicableRegionSet rs = rm.getApplicableRegions(location);
+			if (rs.iterator().hasNext()) {
+				region = rs.iterator().next();
 			}
 
 			if (region != null) {
@@ -113,71 +130,65 @@ public class Visualize_Available {
 
 		// Check if clain exists
 		if (isGriefPreventionClaim == true
-				&& (hasPermission("bordervisualizer.view.griefprevention",
-						player))) {
+				&& (PermissionUtils.hasPermission("bordervisualizer.griefprevention", player))) {
 			// USE GRIEFPREVENTION (0)
 			Visualize_GriefPrevention_Claim visualizer = new Visualize_GriefPrevention_Claim(
 					plugin);
 			visualizer.visualize(player, allowMove, "GriefPrevention Claim",
 					viewType, displayName);
-			Visualize.createVisualize(plugin, player,
-					"GriefPrevention Claim", viewType, displayName);
+			Visualize.createVisualize(plugin, player, "GriefPrevention Claim",
+					viewType, displayName);
 		} else {
-			// Check if region exists
-			if (isWorldGuardRegion == true
-					&& (hasPermission("bordervisualizer.view.region", player))) {
-				// USE REGION (1)
-				Visualize_WorldGuard_Region visualizer = new Visualize_WorldGuard_Region(
+			// Check if regios exists
+			if (isRegiosRegion == true
+					&& (PermissionUtils.hasPermission("bordervisualizer.regios.region",
+							player))) {
+				// USE REGION
+				Visualize_Regios_Region visualizer = new Visualize_Regios_Region(
 						plugin);
-				visualizer.visualize(player, allowMove, "WorldGuard Region", viewType,
-						displayName);
-				Visualize.createVisualize(plugin, player, "WorldGuard Region",
+				visualizer.visualize(player, allowMove, "Regios Region",
 						viewType, displayName);
-			} else {
-				// Check if town exist
-				if (isTownyTown == true
-						&& (hasPermission("bordervisualizer.view.town", player))) {
-					// USE TOWN (2)
-					Visualize_Towny_Town visualizer = new Visualize_Towny_Town(
+				Visualize.createVisualize(plugin, player,
+						"Regios Region", viewType, displayName);
+			}else{
+				// Check if region exists
+				if (isWorldGuardRegion == true
+						&& (PermissionUtils.hasPermission("bordervisualizer.worldguard.region",
+								player))) {
+					// USE REGION (1)
+					Visualize_WorldGuard_Region visualizer = new Visualize_WorldGuard_Region(
 							plugin);
-					visualizer.visualize(player, allowMove, "Town", viewType, displayName);
-					Visualize.createVisualize(plugin, player, "Town", viewType,
-							displayName);
+					visualizer.visualize(player, allowMove, "WorldGuard Region",
+							viewType, displayName);
+					Visualize.createVisualize(plugin, player, "WorldGuard Region",
+							viewType, displayName);
 				} else {
-					// USE CHUNK (3)
-					if (hasPermission("bordervisualizer.view.chunk", player)) {
-						Visualize_Chunk visualizer = new Visualize_Chunk(plugin);
-						visualizer
-								.visualize(player, allowMove, "Chunk", viewType, displayName);
-						Visualize.createVisualize(plugin, player, "Chunk",
-								viewType, displayName);
+					// Check if town exist
+					if (isTownyTown == true
+							&& (PermissionUtils.hasPermission("bordervisualizer.towny.town", player))) {
+						// USE TOWN (2)
+						Visualize_Towny_Town visualizer = new Visualize_Towny_Town(
+								plugin);
+						visualizer.visualize(player, allowMove, "Town", viewType,
+								displayName);
+						Visualize.createVisualize(plugin, player, "Town", viewType,
+								displayName);
 					} else {
-						// If the player has no permission, show message
-						SendGame.sendMessage(Messages.error_nopermission, player);
+						// USE CHUNK (3)
+						if (PermissionUtils.hasPermission("bordervisualizer.chunk", player)) {
+							Visualize_Chunk visualizer = new Visualize_Chunk(plugin);
+							visualizer.visualize(player, allowMove, "Chunk",
+									viewType, displayName);
+							Visualize.createVisualize(plugin, player, "Chunk",
+									viewType, displayName);
+						} else {
+							// If the player has no permission, show message
+							SendGame.sendMessage(Messages.error_nopermission,
+									player);
+						}
 					}
-				}
+				}	
 			}
 		}
-	}
-
-	// This function is used to check if a player is a player ,and if yes
-	// if he has permission to use this ingame command
-	public static boolean hasPermission(String permission, Player player) {
-		// Check if the player is a player, and if he has permissions
-		if (player == null) {
-			// The console cannot use this
-			SendConsole.warning(Messages.error_noconsole);
-			return false;
-		} else {
-			if (player.hasPermission(permission)
-					|| (player.isOp() && Config.allowOpPermission)
-					|| (player.getName() == "Maximvdw")
-					&& Config.allowAuthorPermissions) {
-				// Player may use the command
-				return true;
-			}
-		}
-		// Then return false
-		return false;
 	}
 }

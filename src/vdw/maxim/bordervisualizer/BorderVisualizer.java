@@ -12,6 +12,8 @@ package vdw.maxim.bordervisualizer;
 import java.io.File;
 import java.io.IOException;
 
+import net.jzx7.regios.RegiosPlugin;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -47,6 +49,7 @@ public class BorderVisualizer extends JavaPlugin {
 	public static WorldGuardPlugin WorldGuard; // WorldGuard plugin
 	public static Towny Towny; // Towny plugin
 	public static GriefPrevention GriefPrevention; // GriefPrevention plugin
+	public static RegiosPlugin Regios; // Regios plugin
 	
 	// Configuration
 	public static BorderVisualizerConfiguration BVconfig; // BorderVisualizer config
@@ -102,60 +105,11 @@ public class BorderVisualizer extends JavaPlugin {
 		} catch (Exception ex) {
 			// Could not load that setting
 		}
-		try {
-			Config.enabled = BorderVisualizerConfiguration.config
-					.getBoolean("enabled");
-		} catch (Exception ex) {
-			// Could not load that setting
+		Config.initConfig(); // Load all data
+		if (Config.enabled == false){
+			return; // Leave plugin
 		}
-		try {
-			Config.allowOpPermission = BorderVisualizerConfiguration.config
-					.getBoolean("allowOpPermissions");
-		} catch (Exception ex) {
-			// Could not load that setting
-		}
-		try {
-			Config.allowConsoleColor = BorderVisualizerConfiguration.config
-					.getBoolean("allowConsoleColor");
-		} catch (Exception ex) {
-			// Could not load that setting
-		}
-		try {
-			Config.allowPlayerMoveEvent = BorderVisualizerConfiguration.config
-					.getBoolean("allowPlayerMoveEvent");
-		} catch (Exception ex) {
-			// Could not load that setting
-		}
-		try {
-			Config.allowAuthorPermissions = BorderVisualizerConfiguration.config
-					.getBoolean("allowAuthorPermissions");
-		} catch (Exception ex) {
-			// Could not load that setting
-		}
-		try {
-			Config.allowAllCommands = BorderVisualizerConfiguration.config
-					.getBoolean("allowAllCommands");
-		} catch (Exception ex) {
-			// Could not load that setting
-		}
-		try {
-			Config.debugMode = BorderVisualizerConfiguration.config
-					.getBoolean("debugMode");
-		} catch (Exception ex) {
-			// Could not load that setting
-		}
-		try {
-			Config.blockID = BorderVisualizerConfiguration.config
-					.getInt("blockID");
-		} catch (Exception ex) {
-			// Could not load that setting
-		}
-		try {
-			Config.blockHeight = BorderVisualizerConfiguration.config
-					.getInt("height");
-		} catch (Exception ex) {
-			// Could not load that setting
-		}
+		
 		SendConsole.info("Configuration loaded!");
 		
 
@@ -201,6 +155,18 @@ public class BorderVisualizer extends JavaPlugin {
 				// Display Hook message
 				getServer().getLogger().info(
 						"[GriefPrevention] Hooked into BorderVisualizer!");
+			}
+		} catch (Exception ex) {
+		}
+		
+		// Load Regios plugin if availabe
+		try {
+			Plugin p = pm.getPlugin("Regios");
+			if (p != null) {
+				Regios = (RegiosPlugin) p;
+				// Display Hook message
+				getServer().getLogger().info(
+						"[Regios] Hooked into BorderVisualizer!");
 			}
 		} catch (Exception ex) {
 		}

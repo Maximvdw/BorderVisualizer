@@ -17,22 +17,10 @@ import vdw.maxim.bordervisualizer.configuration.Config;
 import vdw.maxim.bordervisualizer.userinterface.SendConsole;
 
 
-import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.FFlag;
-import com.massivecraft.factions.TerritoryAccess;
-import com.massivecraft.factions.entity.Board;
-import com.massivecraft.factions.entity.BoardColls;
+
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.FactionColl;
 import com.massivecraft.factions.entity.FactionColls;
-import com.massivecraft.factions.entity.UPlayer;
-import com.massivecraft.factions.event.FactionsEventChunkChange;
-import com.massivecraft.factions.event.FactionsEventCreate;
-import com.massivecraft.factions.event.FactionsEventDisband;
-import com.massivecraft.factions.event.FactionsEventHomeChange;
-import com.massivecraft.factions.event.FactionsEventMembershipChange;
-import com.massivecraft.factions.event.FactionsEventNameChange;
-import com.massivecraft.mcore.ps.PS;
 
 public class Visualize_Factions_FactionBlock {
 	/* Get the plugin information from the main class */

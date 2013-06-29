@@ -15,7 +15,12 @@ blockID: 20
 height: 20
 # Default views
 # Choose between "wall" and "frame"
+
+## Rectangle view {GriefPrevention claim}
+rectangle: wall
+## Square view {Chunk, Town, Faction}
 square: wall
+## Cuboid view {Region}
 cuboid: frame
 # ************************ #
 
@@ -41,5 +46,5 @@ debugMode: false
 # Enable/Disable the plugin
 enabled: true
 # Config version (DO NOT EDIT)
-config: 1
+config: 2
 # ************************ #

@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="C:/Users/Maxim/Documents/Minecraft Development/plugins/GriefPrevention.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Maxim/Documents/Minecraft Development/plugins/Factions.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Maxim/Documents/Minecraft Development/plugins/mcore.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Maxim/Documents/Minecraft Development/plugins/Regios.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

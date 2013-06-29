@@ -82,6 +82,8 @@ public class chatColor {
 		output=output.replaceAll("&e", "" + ChatColor.YELLOW.toString());
 		output=output.replaceAll("&f", "" + ChatColor.WHITE.toString());
 		output=output.replaceAll("&i", "" + ChatColor.ITALIC.toString());
+		output=output.replaceAll("&u", "" + ChatColor.UNDERLINE.toString());
+		output=output.replaceAll("&B", "" + ChatColor.BOLD.toString());
 		// Output the result
 		return output;
 	}
@@ -105,6 +107,9 @@ public class chatColor {
 		output=output.replaceAll("&d",  "");
 		output=output.replaceAll("&e",  "");
 		output=output.replaceAll("&f",  "");
+		output=output.replaceAll("&u",  "");
+		output=output.replaceAll("&i",  "");
+		output=output.replaceAll("&B",  "");
 		// Output the result
 		return output;
 	}
