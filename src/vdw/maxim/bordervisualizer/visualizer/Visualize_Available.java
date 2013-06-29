@@ -56,7 +56,13 @@ public class Visualize_Available {
 
 		// Get the world of the player
 		World world = player.getWorld();
+		
+		// - Check the Factions plugin for availble borders
+		Boolean isFactionsFaction = false;
+		if (BorderVisualizer.Factions != null) {
 
+		}
+		
 		// - Check the Towny plugin for available borders
 		Boolean isTownyTown = false;
 		if (BorderVisualizer.Towny != null) {

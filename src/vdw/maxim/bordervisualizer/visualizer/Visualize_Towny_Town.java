@@ -50,6 +50,7 @@ public class Visualize_Towny_Town {
 
 		// Get the world of the player
 		World world = player.getWorld();
+		
 		// Get the town of the player location
 		TownBlock current_TownBlock = TownyUniverse.getTownBlock(location);
 		Town town = null;

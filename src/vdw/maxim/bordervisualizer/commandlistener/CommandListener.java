@@ -29,6 +29,8 @@ import vdw.maxim.bordervisualizer.utils.PermissionUtils;
 import vdw.maxim.bordervisualizer.visualizer.Visualize;
 import vdw.maxim.bordervisualizer.visualizer.Visualize_Available;
 import vdw.maxim.bordervisualizer.visualizer.Visualize_Chunk;
+import vdw.maxim.bordervisualizer.visualizer.Visualize_Factions_Faction;
+import vdw.maxim.bordervisualizer.visualizer.Visualize_Factions_FactionBlock;
 import vdw.maxim.bordervisualizer.visualizer.Visualize_GriefPrevention_Claim;
 import vdw.maxim.bordervisualizer.visualizer.Visualize_Regios_Region;
 import vdw.maxim.bordervisualizer.visualizer.Visualize_Towny_Town;
@@ -234,6 +236,44 @@ public class CommandListener implements CommandExecutor {
 								viewType, displayName);
 						Visualize.createVisualize(plugin, player, "Chunk",
 								viewType, displayName);
+					}
+				} else if (argument.equalsIgnoreCase("factionblock")) {
+					if (BorderVisualizer.Factions != null){
+						if (PermissionUtils.hasPermission(
+								"bordervisualizer.factions.factionblock", player)) {
+							if (defaultViewType == true) {
+								viewType = Config.squareView;
+							} // Change viewtype
+							Visualize_Factions_FactionBlock visualizer = new Visualize_Factions_FactionBlock(
+									plugin);
+							visualizer.visualize(player, allowMove,
+									"Faction Block", viewType, displayName);
+							Visualize.createVisualize(plugin, player,
+									"Faction Block", viewType, displayName);
+						}	
+					} else {
+						// Plugin not found
+						SendGame.sendMessage(Messages.error_plugin_notfound,
+								player);
+					}
+				} else if (argument.equalsIgnoreCase("faction")) {
+					if (BorderVisualizer.Factions != null){
+						if (PermissionUtils.hasPermission(
+								"bordervisualizer.factions.faction", player)) {
+							if (defaultViewType == true) {
+								viewType = Config.squareView;
+							} // Change viewtype
+							Visualize_Factions_Faction visualizer = new Visualize_Factions_Faction(
+									plugin);
+							visualizer.visualize(player, allowMove,
+									"Faction", viewType, displayName);
+							Visualize.createVisualize(plugin, player,
+									"Faction", viewType, displayName);
+						}	
+					} else {
+						// Plugin not found
+						SendGame.sendMessage(Messages.error_plugin_notfound,
+								player);
 					}
 				} else if (argument.equalsIgnoreCase("region")) {
 					// Check if Regios or Worldguard

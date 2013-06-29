@@ -38,6 +38,8 @@ import vdw.maxim.bordervisualizer.userinterface.SendGame;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+
+import com.massivecraft.factions.Factions;
 import com.palmergames.bukkit.towny.Towny;
 
 
@@ -50,6 +52,7 @@ public class BorderVisualizer extends JavaPlugin {
 	public static Towny Towny; // Towny plugin
 	public static GriefPrevention GriefPrevention; // GriefPrevention plugin
 	public static RegiosPlugin Regios; // Regios plugin
+	public static Factions Factions; // Factions plugin
 	
 	// Configuration
 	public static BorderVisualizerConfiguration BVconfig; // BorderVisualizer config
@@ -171,6 +174,18 @@ public class BorderVisualizer extends JavaPlugin {
 		} catch (Exception ex) {
 		}
 
+		// Load Factions plugin if availabe
+		try {
+			Plugin p = pm.getPlugin("Factions");
+			if (p != null) {
+				Factions = (Factions) p;
+				// Display Hook message
+				getServer().getLogger().info(
+						"[Factions] Hooked into BorderVisualizer!");
+			}
+		} catch (Exception ex) {
+		}
+		
 		// Load Player movement listener
 		if (Config.allowPlayerMoveEvent) {
 			try {
