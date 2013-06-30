@@ -1,6 +1,6 @@
 name: BorderVisualizer
 main: vdw.maxim.bordervisualizer.BorderVisualizer
-version: '1.0.3a'
+version: '1.0.4b'
 website: http://dev.bukkit.org/bukkit-mods/BorderVisualizer/
 author: Maximvdw
 description: Visualize borders of Towny,WorldGuard or chunks
@@ -23,7 +23,7 @@ commands:
 permissions:
     bordervisualizer.administrator:
         description: Give administrator privileges
-        default: op
+        default: false
         children:
             bordervisualizer.reload: true
             bordervisualizer.update: true
@@ -36,12 +36,56 @@ permissions:
             bordervisualizer.worldguard.region: true
             bordervisualizer.regios.region: true
             bordervisualizer.towny.town: true
+            bordervisualizer.factions.faction: true
     bordervisualizer.user:
         description: Give user privileges
-        default: false
+        default: true
         children:
             bordervisualizer.griefprevention: true
             bordervisualizer.towny.townblock: true
+            bordervisualizer.factions.factionblock: true
             bordervisualizer.chunk: true
             bordervisualizer.about: true
             bordervisualizer.help: true
+    bordervisualizer.help:
+        description: See plugin help
+        default: true
+    bordervisualizer.adminhelp:
+        description: See admin plugin help
+        default: false
+    bordervisualizer.about:
+        description: See plugin information
+        default: true
+    bordervisualizer.reload:
+        description: Reload the plugin
+        default: false
+    bordervisualizer.update:
+        description: Check for updates
+        default: false
+    bordervisualizer.permissions:
+        description: See available permission nodes
+        default: false
+    bordervisualizer.chunk:
+        description: Visualize [Chunk]
+        default: true
+    bordervisualizer.griefprevention:
+        description: Visualize [GriefPrevention Claim]
+        default: true
+    bordervisualizer.towny.town:
+        description: Visualize [Towny Town]
+        default: false
+    bordervisualizer.towny.townblock:
+        description: Visualize [Towny Townblock]
+        default: true
+    bordervisualizer.factions.faction:
+        description: Visualize [Factions Faction]
+        default: false
+    bordervisualizer.factions.factionblock:
+        description: Visualize [Factions Factionblock]
+        default: true
+    bordervisualizer.worldguard.region:
+        description: Visualize [WorldGuard Region]
+        default: false
+    bordervisualizer.regios.region:
+        description: Visualize [Regios Region]
+        default: false

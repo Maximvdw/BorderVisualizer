@@ -37,6 +37,7 @@ import vdw.maxim.bordervisualizer.visualizer.Visualize_GriefPrevention_Claim;
 import vdw.maxim.bordervisualizer.visualizer.Visualize_Regios_Region;
 import vdw.maxim.bordervisualizer.visualizer.Visualize_Towny_Town;
 import vdw.maxim.bordervisualizer.visualizer.Visualize_Towny_TownBlock;
+import vdw.maxim.bordervisualizer.visualizer.Visualize_War_Zone;
 import vdw.maxim.bordervisualizer.visualizer.Visualize_WorldGuard_Region;
 
 public class CommandListener implements CommandExecutor {
@@ -100,12 +101,10 @@ public class CommandListener implements CommandExecutor {
 					String displayName = null;
 					// Check if wand
 					ItemStack is = player.getItemInHand();
-					if (is.getType() == Material.WOOD_HOE){
+					if (is.getType() == Material.WOOD_HOE) {
 						viewType = ViewTypes.VIEW_GLASS_WAND;
 						// Send Message
-						SendGame.sendMessage(
-								Messages.confirm_wand,
-								player);
+						SendGame.sendMessage(Messages.confirm_wand, player);
 					}
 					Visualize_Available visualizer = new Visualize_Available(
 							plugin);
@@ -127,7 +126,7 @@ public class CommandListener implements CommandExecutor {
 					return true; // Exit routine
 				} else if (argument.equalsIgnoreCase("about")) {
 					// Show info about the plugin
-
+					SendHelp.help_about(player);
 					return true; // Exit routine
 				} else if (argument.equalsIgnoreCase("admin")) {
 					// Show admin help
@@ -197,15 +196,13 @@ public class CommandListener implements CommandExecutor {
 				}
 				// Check if wand
 				ItemStack is = player.getItemInHand();
-				if (is.getType() == Material.WOOD_HOE){
+				if (is.getType() == Material.WOOD_HOE) {
 					viewType = ViewTypes.VIEW_GLASS_WAND;
 					defaultViewType = false;
 					// Send Message
-					SendGame.sendMessage(
-							Messages.confirm_wand,
-							player);
+					SendGame.sendMessage(Messages.confirm_wand, player);
 				}
-				
+
 				// Check for the view
 				if (argument.equalsIgnoreCase("town")) {
 					if (BorderVisualizer.Towny != null) {
@@ -329,6 +326,21 @@ public class CommandListener implements CommandExecutor {
 						SendGame.sendMessage(Messages.error_plugin_notfound,
 								player);
 					}
+				} else if (argument.equalsIgnoreCase("warzone")) {
+					if (BorderVisualizer.War != null) {
+						if (PermissionUtils.hasPermission(
+								"bordervisualizer.war.zone", player)) {
+							if (defaultViewType == true) {
+								viewType = Config.cuboidView;
+							} // Change viewtype
+							Visualize_War_Zone visualizer = new Visualize_War_Zone(
+									plugin);
+							visualizer.visualize(player, allowMove, "WarZone",
+									viewType, displayName);
+							Visualize.createVisualize(plugin, player,
+									"WarZone", viewType, displayName);
+						}
+					}
 				} else if (argument.equalsIgnoreCase("regios")) {
 					if (BorderVisualizer.Regios != null) {
 						if (PermissionUtils.hasPermission(
@@ -369,6 +381,9 @@ public class CommandListener implements CommandExecutor {
 						SendGame.sendMessage(Messages.error_plugin_notfound,
 								player);
 					}
+				} else {
+					// Invalid
+					SendGame.sendMessage(Messages.error_arguments, player);
 				}
 			}
 		} else {

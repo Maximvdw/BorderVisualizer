@@ -42,10 +42,12 @@ import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import com.massivecraft.factions.Factions;
 import com.palmergames.bukkit.towny.Towny;
 
+import com.tommytony.war.War;
+
 
 public class BorderVisualizer extends JavaPlugin {
 	// Allow other classes to reach this class
-	public BorderVisualizer plugin = this;
+	public static BorderVisualizer plugin;
 
 	// Load other plugins
 	public static WorldGuardPlugin WorldGuard; // WorldGuard plugin
@@ -53,6 +55,8 @@ public class BorderVisualizer extends JavaPlugin {
 	public static GriefPrevention GriefPrevention; // GriefPrevention plugin
 	public static RegiosPlugin Regios; // Regios plugin
 	public static Factions Factions; // Factions plugin
+	public static War War; // War plugin
+	//public static Residence Residence; // Residence plugin
 	
 	// Configuration
 	public static BorderVisualizerConfiguration BVconfig; // BorderVisualizer config
@@ -76,6 +80,8 @@ public class BorderVisualizer extends JavaPlugin {
 		SendConsole.info("(c) Maxim Van de Wynckel 2013");
 		SendConsole.info("-----------------------------");
 		// CREDITS
+		
+		plugin = this; // Set plugin
 		
 		// Load settings
 		SendConsole.info("Loading configuration ...");
@@ -182,6 +188,18 @@ public class BorderVisualizer extends JavaPlugin {
 				// Display Hook message
 				getServer().getLogger().info(
 						"[Factions] Hooked into BorderVisualizer!");
+			}
+		} catch (Exception ex) {
+		}
+		
+		// Load War plugin if availabe
+		try {
+			Plugin p = pm.getPlugin("War");
+			if (p != null) {
+				War = (War) p;
+				// Display Hook message
+				getServer().getLogger().info(
+						"[War] Hooked into BorderVisualizer!");
 			}
 		} catch (Exception ex) {
 		}

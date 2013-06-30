@@ -31,6 +31,8 @@ public class Messages {
 			"&cThe view is too far away from your position!";
 	public static String error_plugin_notfound = 
 			"&cThe plugin that uses this view is not found!";
+	public static String error_arguments = 
+			"&cInvalid argument &4/bv (<view>) (<params>)";
 	/* END ERROR MESSAGES */
 	
 	
@@ -68,7 +70,9 @@ public class Messages {
 	
 	/* HELP MESSAGES */
 	public static String help_header = 
-			"&6-----------[ BorderVisualizer]-----------";
+			"&6-------------[BorderVisualizer]-------------";
+	public static String help_footer = 
+			"&6------------------------------------------";
 	public static String help_cmd=
 			"&a/bv about &f- Show plugin information\n" + 
 			"&a/bv help &f- Show plugin help\n" +
@@ -94,7 +98,5 @@ public class Messages {
 			"&6Project: BorderVisualizer v{VERSION}\n" + 
 		    "&6Author: Maxim Van de Wynckel (Maximvdw)\n" +
 			"&6Site: http://dev.bukkit.org/bukkit-mods/BorderVisualizer";
-	public static String help_footer = 
-			"&6-----------------------------------------";
 	/* END HELP MESSAGES */
 }

@@ -11,5 +11,7 @@
 	<classpathentry kind="lib" path="C:/Users/Maxim/Documents/Minecraft Development/plugins/Factions.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Maxim/Documents/Minecraft Development/plugins/mcore.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Maxim/Documents/Minecraft Development/plugins/Regios.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Maxim/Documents/Minecraft Development/plugins/War-v1.7.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Maxim/Documents/Minecraft Development/plugins/Residence.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
