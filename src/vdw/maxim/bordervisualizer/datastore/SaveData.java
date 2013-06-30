@@ -46,6 +46,7 @@ public class SaveData {
 			data2DSquare.addData(x, z, size, ignore);
 			dataLocation.addData(player.getLocation());
 			dataAllowMove.addData(allowMove);
+			dataGlassified.addData(null);
 		}
 	}
 
@@ -69,6 +70,7 @@ public class SaveData {
 			data2DSquareSet.addData(square);
 			dataLocation.addData(player.getLocation());
 			dataAllowMove.addData(allowMove);
+			dataGlassified.addData(null);
 		}
 	}
 
@@ -85,6 +87,7 @@ public class SaveData {
 			dataViewObjects.addData(ViewObjects._3D_CUBOID);
 			data3DCuboid.addData(min, max);
 			dataAllowMove.addData(allowMove);
+			dataGlassified.addData(null);
 		}
 	}
 
@@ -101,6 +104,7 @@ public class SaveData {
 			dataViewObjects.addData(ViewObjects._2D_RECTANGLE);
 			data2DRectangle.addData(min, max);
 			dataAllowMove.addData(allowMove);
+			dataGlassified.addData(null);
 		}
 	}
 }

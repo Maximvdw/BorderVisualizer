@@ -22,14 +22,15 @@ import vdw.maxim.bordervisualizer.generateview.Generate_2D_Rectangle;
 import vdw.maxim.bordervisualizer.generateview.Generate_2D_RectangleFrame;
 import vdw.maxim.bordervisualizer.generateview.Generate_2D_Square;
 import vdw.maxim.bordervisualizer.generateview.Generate_2D_SquareFrame;
+import vdw.maxim.bordervisualizer.generateview.Generate_2D_SquareWand;
 import vdw.maxim.bordervisualizer.generateview.Generate_3D_Cuboid;
 import vdw.maxim.bordervisualizer.generateview.Generate_3D_CuboidFrame;
+import vdw.maxim.bordervisualizer.generateview.Generate_3D_CuboidWand;
 import vdw.maxim.bordervisualizer.generateview.ViewObjects;
 import vdw.maxim.bordervisualizer.generateview.ViewTypes;
 import vdw.maxim.bordervisualizer.locale.Messages;
 import vdw.maxim.bordervisualizer.userinterface.SendConsole;
 import vdw.maxim.bordervisualizer.userinterface.SendGame;
-
 
 public class Visualize {
 
@@ -69,12 +70,13 @@ public class Visualize {
 						plugin);
 				generator.generate(player, xpos, ystart, zpos, size, height,
 						block, ignore);
+			} else if (viewType == ViewTypes.VIEW_GLASS_WAND) {
+				// Generate the 2D Walls
+				Generate_2D_SquareWand generator = new Generate_2D_SquareWand(
+						plugin);
+				generator.generate(player, xpos, ystart, zpos, size, height,
+						block, ignore);
 			}
-
-			// Send Message
-			SendGame.sendMessage(
-					Messages.config_visualized.replace("{VIEW}", viewName),
-					player);
 		} else if (viewObject == ViewObjects._2D_SQUARESET) {
 			// Load data
 			int[] xpos = data.get2D_SQUARESET_Xpos(player);
@@ -108,13 +110,14 @@ public class Visualize {
 							plugin);
 					generator.generate(player, xpos[i], ystart, zpos[i],
 							size[i], height, block, ignore.get(i));
+				} else if (viewType == ViewTypes.VIEW_GLASS_WAND) {
+					// Generate the 2D Walls
+					Generate_2D_SquareWand generator = new Generate_2D_SquareWand(
+							plugin);
+					generator.generate(player, xpos[i], ystart, zpos[i],
+							size[i], height, block, ignore.get(i));
 				}
 			}
-
-			// Send Message
-			SendGame.sendMessage(
-					Messages.config_visualized.replace("{VIEW}", viewName),
-					player);
 		} else if (viewObject == ViewObjects._3D_CUBOID) {
 			// Load data
 			int xMin = data.get3D_CUBOID_xmin(player);
@@ -141,12 +144,14 @@ public class Visualize {
 				generator.generate(player, xMin, yMin, zMin,
 						Math.abs(xMax - xMin), Math.abs(yMax - yMin),
 						Math.abs(zMax - zMin), block, null);
+			} else if (viewType == ViewTypes.VIEW_GLASS_WAND) {
+				// Generate the 3D Cuboid
+				Generate_3D_CuboidWand generator = new Generate_3D_CuboidWand(
+						plugin);
+				generator.generate(player, xMin, yMin, zMin,
+						Math.abs(xMax - xMin), Math.abs(yMax - yMin),
+						Math.abs(zMax - zMin), block, null);
 			}
-
-			// Send Message
-			SendGame.sendMessage(
-					Messages.config_visualized.replace("{VIEW}", viewName),
-					player);
 		} else if (viewObject == ViewObjects._2D_RECTANGLE) {
 			// Load data
 			int xMin = data.get2D_RECTANGLE_xmin(player);
@@ -175,10 +180,12 @@ public class Visualize {
 						Math.abs(xMax - xMin), height, Math.abs(zMax - zMin),
 						block, null);
 			}
-
+		}
+		
+		if (viewType != ViewTypes.VIEW_GLASS_WAND) {
 			// Send Message
 			SendGame.sendMessage(
-					Messages.config_visualized.replace("{VIEW}", viewName),
+					Messages.confirm_visualized.replace("{VIEW}", viewName),
 					player);
 		}
 	}
@@ -214,6 +221,12 @@ public class Visualize {
 						plugin);
 				generator.generate(player, xpos, ystart, zpos, size, height,
 						block, ignore);
+			} else if (viewType == ViewTypes.VIEW_GLASS_WAND) {
+				// Generate the 2D Walls
+				Generate_2D_SquareWand generator = new Generate_2D_SquareWand(
+						plugin);
+				generator.generate(player, xpos, ystart, zpos,
+						size, height, block, ignore);
 			}
 		} else if (viewObject == ViewObjects._2D_SQUARESET) {
 			// Load data
@@ -248,6 +261,12 @@ public class Visualize {
 							plugin);
 					generator.generate(player, xpos[i], ystart, zpos[i],
 							size[i], height, block, ignore.get(i));
+				} else if (viewType == ViewTypes.VIEW_GLASS_WAND) {
+					// Generate the 2D Walls
+					Generate_2D_SquareWand generator = new Generate_2D_SquareWand(
+							plugin);
+					generator.generate(player, xpos[i], ystart, zpos[i],
+							size[i], height, block, ignore.get(i));
 				}
 			}
 		} else if (viewObject == ViewObjects._3D_CUBOID) {
@@ -272,6 +291,13 @@ public class Visualize {
 			} else if (viewType == ViewTypes.VIEW_GLASS_FRAME) {
 				// Generate the 3D Cuboid
 				Generate_3D_CuboidFrame generator = new Generate_3D_CuboidFrame(
+						plugin);
+				generator.generate(player, xMin, yMin, zMin,
+						Math.abs(xMax - xMin), Math.abs(yMax - yMin),
+						Math.abs(zMax - zMin), block, null);
+			} else if (viewType == ViewTypes.VIEW_GLASS_WAND) {
+				// Generate the 3D Cuboid
+				Generate_3D_CuboidWand generator = new Generate_3D_CuboidWand(
 						plugin);
 				generator.generate(player, xMin, yMin, zMin,
 						Math.abs(xMax - xMin), Math.abs(yMax - yMin),

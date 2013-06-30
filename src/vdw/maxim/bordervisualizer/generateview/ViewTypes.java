@@ -12,4 +12,5 @@ package vdw.maxim.bordervisualizer.generateview;
 public class ViewTypes {
 	public static int VIEW_GLASS_WALL = 0;
 	public static int VIEW_GLASS_FRAME = 1;
+	public static int VIEW_GLASS_WAND = 2;
 }

@@ -56,9 +56,12 @@ public class Messages {
 			"&2[&fBorderVisualizer&2]&a Reload complete!";
 	public static String confirm_copy_config = 
 			"&aCopying config.yml file!";
-	public static String config_visualized = 
+	public static String confirm_visualized = 
 			"&2[&fBorderVisualizer&2]&a Visualized {VIEW}.";
-	public static String config_removed = 
+	public static String confirm_wand = 
+			"&2[&fBorderVisualizer&2]&a Visualizing borders with wand.\n" + 
+			"&aUse &2/bv&a again to disable the wand.";
+	public static String confirm_removed = 
 			"&2[&fBorderVisualizer&2]&e Removed border.";
 	/* END CONFIRM MESSAGES */
 	

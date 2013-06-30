@@ -32,6 +32,7 @@ public class ResetData {
 		dataViews.removeData(index);
 		dataViewTypes.removeData(index);
 		dataAllowMove.removeData(index);
+		dataGlassified.removeData(index);
 		
 		int viewObject = (int) dataViewObjects.getData(index);
 		// Delete the data based on viewobject

@@ -26,6 +26,17 @@ public class LoadData {
 		this.plugin = plugin;
 	}
 	
+	// Get glassigied
+	public Location[] getGlassified(Player player)
+	{
+		if (dataPlayers.contains(player))
+		{
+			// Now get the index of the item/player
+			int index = dataPlayers.getIndex(player);
+			return (Location[])dataGlassified.getData(index);
+		}else{ return null; }
+	}
+	
 	// Get if there is a nomove
 	public boolean getAllowMove(Player player)
 	{

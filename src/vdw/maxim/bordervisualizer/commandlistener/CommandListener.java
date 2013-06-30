@@ -9,10 +9,12 @@
 
 package vdw.maxim.bordervisualizer.commandlistener;
 
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import vdw.maxim.bordervisualizer.BorderVisualizer;
 import vdw.maxim.bordervisualizer.configuration.Config;
@@ -78,7 +80,7 @@ public class CommandListener implements CommandExecutor {
 			if (player != null) {
 				if (dataPlayers.contains(player)) {
 					// Delete the view
-					SendGame.sendMessage(Messages.config_removed, player); // Show
+					SendGame.sendMessage(Messages.confirm_removed, player); // Show
 																			// message
 																			// to
 																			// confirm
@@ -96,7 +98,15 @@ public class CommandListener implements CommandExecutor {
 					// Get additional arguments
 					int viewType = ViewTypes.VIEW_GLASS_WALL;
 					String displayName = null;
-
+					// Check if wand
+					ItemStack is = player.getItemInHand();
+					if (is.getType() == Material.WOOD_HOE){
+						viewType = ViewTypes.VIEW_GLASS_WAND;
+						// Send Message
+						SendGame.sendMessage(
+								Messages.confirm_wand,
+								player);
+					}
 					Visualize_Available visualizer = new Visualize_Available(
 							plugin);
 					visualizer.visualize(player, false, "Available", viewType,
@@ -185,7 +195,17 @@ public class CommandListener implements CommandExecutor {
 
 					}
 				}
-
+				// Check if wand
+				ItemStack is = player.getItemInHand();
+				if (is.getType() == Material.WOOD_HOE){
+					viewType = ViewTypes.VIEW_GLASS_WAND;
+					defaultViewType = false;
+					// Send Message
+					SendGame.sendMessage(
+							Messages.confirm_wand,
+							player);
+				}
+				
 				// Check for the view
 				if (argument.equalsIgnoreCase("town")) {
 					if (BorderVisualizer.Towny != null) {
@@ -238,9 +258,10 @@ public class CommandListener implements CommandExecutor {
 								viewType, displayName);
 					}
 				} else if (argument.equalsIgnoreCase("factionblock")) {
-					if (BorderVisualizer.Factions != null){
+					if (BorderVisualizer.Factions != null) {
 						if (PermissionUtils.hasPermission(
-								"bordervisualizer.factions.factionblock", player)) {
+								"bordervisualizer.factions.factionblock",
+								player)) {
 							if (defaultViewType == true) {
 								viewType = Config.squareView;
 							} // Change viewtype
@@ -250,14 +271,14 @@ public class CommandListener implements CommandExecutor {
 									"Faction Block", viewType, displayName);
 							Visualize.createVisualize(plugin, player,
 									"Faction Block", viewType, displayName);
-						}	
+						}
 					} else {
 						// Plugin not found
 						SendGame.sendMessage(Messages.error_plugin_notfound,
 								player);
 					}
 				} else if (argument.equalsIgnoreCase("faction")) {
-					if (BorderVisualizer.Factions != null){
+					if (BorderVisualizer.Factions != null) {
 						if (PermissionUtils.hasPermission(
 								"bordervisualizer.factions.faction", player)) {
 							if (defaultViewType == true) {
@@ -265,11 +286,11 @@ public class CommandListener implements CommandExecutor {
 							} // Change viewtype
 							Visualize_Factions_Faction visualizer = new Visualize_Factions_Faction(
 									plugin);
-							visualizer.visualize(player, allowMove,
-									"Faction", viewType, displayName);
+							visualizer.visualize(player, allowMove, "Faction",
+									viewType, displayName);
 							Visualize.createVisualize(plugin, player,
 									"Faction", viewType, displayName);
-						}	
+						}
 					} else {
 						// Plugin not found
 						SendGame.sendMessage(Messages.error_plugin_notfound,

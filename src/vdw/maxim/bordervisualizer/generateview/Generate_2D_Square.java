@@ -20,7 +20,6 @@ import vdw.maxim.bordervisualizer.locale.Messages;
 import vdw.maxim.bordervisualizer.userinterface.SendConsole;
 import vdw.maxim.bordervisualizer.userinterface.SendGame;
 
-
 public class Generate_2D_Square {
 	/* Get the plugin information from the main class */
 	public BorderVisualizer plugin;
@@ -39,16 +38,15 @@ public class Generate_2D_Square {
 		// Check distance
 		int x_distance = Math.abs((int) player.getLocation().getX() - x);
 		int z_distance = Math.abs((int) player.getLocation().getZ() - z);
-		
+
 		/* DEBUG LOGGING */
 		if (Config.debugMode == true) {
 			SendConsole.info("GENERATE 2D SQUARE WALL");
 			SendConsole.info("Distance X: " + x_distance);
 			SendConsole.info("Distance Z: " + z_distance);
 		}
-		
-		if (x_distance < 300+size_sides || z_distance < 300+size_sides)
-		{
+
+		if (x_distance < 300 + size_sides || z_distance < 300 + size_sides) {
 			// Run the render on a diffrent thread
 			plugin.getServer().getScheduler()
 					.runTaskAsynchronously(plugin, new Runnable() {
@@ -105,26 +103,31 @@ public class Generate_2D_Square {
 								}
 								// Fill corners
 								// Get all the corners
-								corner1 = world.getBlockAt(x, i, z).getLocation();
+								corner1 = world.getBlockAt(x, i, z)
+										.getLocation();
 								corner2 = world.getBlockAt(x + size, i, z)
 										.getLocation();
 								corner3 = world.getBlockAt(x, i, z + size)
 										.getLocation();
-								corner4 = world.getBlockAt(x + size, i, z + size)
-										.getLocation();
+								corner4 = world.getBlockAt(x + size, i,
+										z + size).getLocation();
 								// Send the fake blocks
 								if (corner1.getBlock().getType() == Material.AIR)
-									player.sendBlockChange(corner1, block, (byte) 0);
+									player.sendBlockChange(corner1, block,
+											(byte) 0);
 								if (corner2.getBlock().getType() == Material.AIR)
-									player.sendBlockChange(corner2, block, (byte) 0);
+									player.sendBlockChange(corner2, block,
+											(byte) 0);
 								if (corner3.getBlock().getType() == Material.AIR)
-									player.sendBlockChange(corner3, block, (byte) 0);
+									player.sendBlockChange(corner3, block,
+											(byte) 0);
 								if (corner4.getBlock().getType() == Material.AIR)
-									player.sendBlockChange(corner4, block, (byte) 0);
+									player.sendBlockChange(corner4, block,
+											(byte) 0);
 							}
 						}
 					});
-		}else{
+		} else {
 			// Send message
 			SendGame.sendMessage(Messages.error_view_distance, player);
 		}

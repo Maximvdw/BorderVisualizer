@@ -10,6 +10,7 @@
 package vdw.maxim.bordervisualizer.playerlistener;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,11 +22,11 @@ import vdw.maxim.bordervisualizer.configuration.Config;
 import vdw.maxim.bordervisualizer.datastore.LoadData;
 import vdw.maxim.bordervisualizer.datastore.dataLocation;
 import vdw.maxim.bordervisualizer.datastore.dataPlayers;
+import vdw.maxim.bordervisualizer.generateview.ViewTypes;
 import vdw.maxim.bordervisualizer.locale.Messages;
 import vdw.maxim.bordervisualizer.userinterface.SendConsole;
 import vdw.maxim.bordervisualizer.userinterface.SendGame;
 import vdw.maxim.bordervisualizer.visualizer.Visualize;
-
 
 public class PlayerListener_Movement implements Listener {
 	/* Get the plugin information from the main class */
@@ -48,15 +49,21 @@ public class PlayerListener_Movement implements Listener {
 			// Get the index of the player
 			int index = dataPlayers.getIndex(player);
 			LoadData data = new LoadData(plugin);
-			if (!data.getAllowMove(player)){
+			if (!data.getAllowMove(player)) {
 				Location location_prev = (Location) dataLocation.getData(index);
-				if (checkLocationsEqual(location,location_prev) == false) {
-					// Show message
-					SendGame.sendMessage(
-							Messages.warning_movement.replace("{VIEW}", data.getViewName(player)),
-							player);
-					Visualize.deleteVisualize(plugin, player);
-				}	
+				if (checkLocationsEqual(location, location_prev) == false) {
+					if (data.getViewType(player) == ViewTypes.VIEW_GLASS_WAND) {
+						if (player.getItemInHand().getType() == Material.WOOD_HOE)
+							Visualize.createVisualize(plugin, player, "",
+									ViewTypes.VIEW_GLASS_WAND, "");
+						dataLocation.data.set(index, location);
+					} else {
+						// Show message
+						SendGame.sendMessage(Messages.warning_movement.replace(
+								"{VIEW}", data.getViewName(player)), player);
+						Visualize.deleteVisualize(plugin, player);
+					}
+				}
 			}
 		}
 
@@ -65,24 +72,26 @@ public class PlayerListener_Movement implements Listener {
 	/* Check if two locations are equal to eachother */
 	public static boolean checkLocationsEqual(Location loc1, Location loc2) {
 		// Get X,Y,Z from location 1
-		String loc1_str = Math.round(loc1.getX()) + Math.round(loc1.getY()) + Math.round(loc1.getZ()) + "";
+		String loc1_str = Math.round(loc1.getX()) + Math.round(loc1.getY())
+				+ Math.round(loc1.getZ()) + "";
 		// Get X,Y,Z from location 2
-		String loc2_str = Math.round(loc2.getX()) + Math.round(loc2.getY()) + Math.round(loc2.getZ()) + "";
-		
+		String loc2_str = Math.round(loc2.getX()) + Math.round(loc2.getY())
+				+ Math.round(loc2.getZ()) + "";
+
 		/* DEBUG LOGGING */
 		if (Config.debugMode == true) {
 			SendConsole.info("Checking if locations are Equal:");
 			SendConsole.info("Location1_str:" + loc1_str);
 			SendConsole.info("Location2_str:" + loc2_str);
 		}
-		
+
 		// Check if they are equal
 		if (loc1_str.equalsIgnoreCase(loc2_str)) {
 			/* DEBUG LOGGING */
 			if (Config.debugMode == true) {
 				SendConsole.info("Returning TRUE for checkLocationsEqual");
 			}
-			
+
 			return true;
 		} else {
 			/* DEBUG LOGGING */
