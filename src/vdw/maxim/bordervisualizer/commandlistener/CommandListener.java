@@ -35,6 +35,7 @@ import vdw.maxim.bordervisualizer.visualizer.Visualize_Factions_Faction;
 import vdw.maxim.bordervisualizer.visualizer.Visualize_Factions_FactionBlock;
 import vdw.maxim.bordervisualizer.visualizer.Visualize_GriefPrevention_Claim;
 import vdw.maxim.bordervisualizer.visualizer.Visualize_Regios_Region;
+import vdw.maxim.bordervisualizer.visualizer.Visualize_Residence_Region;
 import vdw.maxim.bordervisualizer.visualizer.Visualize_Towny_Town;
 import vdw.maxim.bordervisualizer.visualizer.Visualize_Towny_TownBlock;
 import vdw.maxim.bordervisualizer.visualizer.Visualize_War_Zone;
@@ -287,6 +288,25 @@ public class CommandListener implements CommandExecutor {
 									viewType, displayName);
 							Visualize.createVisualize(plugin, player,
 									"Faction", viewType, displayName);
+						}
+					} else {
+						// Plugin not found
+						SendGame.sendMessage(Messages.error_plugin_notfound,
+								player);
+					}
+				} else if (argument.equalsIgnoreCase("residence")) {
+					if (BorderVisualizer.Factions != null) {
+						if (PermissionUtils.hasPermission(
+								"bordervisualizer.residence", player)) {
+							if (defaultViewType == true) {
+								viewType = Config.cuboidView;
+							} // Change viewtype
+							Visualize_Residence_Region visualizer = new Visualize_Residence_Region(
+									plugin);
+							visualizer.visualize(player, allowMove, "Residence",
+									viewType, displayName);
+							Visualize.createVisualize(plugin, player,
+									"Residence", viewType, displayName);
 						}
 					} else {
 						// Plugin not found

@@ -10,7 +10,6 @@
 package vdw.maxim.bordervisualizer.visualizer;
 
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import vdw.maxim.bordervisualizer.BorderVisualizer;
@@ -20,12 +19,6 @@ import vdw.maxim.bordervisualizer.locale.Messages;
 import vdw.maxim.bordervisualizer.userinterface.SendConsole;
 import vdw.maxim.bordervisualizer.userinterface.SendGame;
 
-import com.sk89q.worldedit.BlockVector;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import com.tommytony.war.War;
 import com.tommytony.war.Warzone;
 import com.tommytony.war.volume.ZoneVolume;
 
@@ -47,11 +40,6 @@ public class Visualize_War_Zone {
 		// Save the player's location
 		Location location = player.getLocation();
 
-		// Get World
-		World world = location.getWorld();
-
-		// Get the region
-		War warPlugin = BorderVisualizer.War;
 		Warzone warZone = null;
 
 		if (displayName == null) {

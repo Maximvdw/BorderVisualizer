@@ -43,6 +43,7 @@ import com.massivecraft.factions.Factions;
 import com.palmergames.bukkit.towny.Towny;
 
 import com.tommytony.war.War;
+import com.bekvon.bukkit.residence.Residence;
 
 
 public class BorderVisualizer extends JavaPlugin {
@@ -56,7 +57,7 @@ public class BorderVisualizer extends JavaPlugin {
 	public static RegiosPlugin Regios; // Regios plugin
 	public static Factions Factions; // Factions plugin
 	public static War War; // War plugin
-	//public static Residence Residence; // Residence plugin
+	public static Residence Residence; // Residence plugin
 	
 	// Configuration
 	public static BorderVisualizerConfiguration BVconfig; // BorderVisualizer config
@@ -200,6 +201,18 @@ public class BorderVisualizer extends JavaPlugin {
 				// Display Hook message
 				getServer().getLogger().info(
 						"[War] Hooked into BorderVisualizer!");
+			}
+		} catch (Exception ex) {
+		}
+		
+		// Load Residence plugin if availabe
+		try {
+			Plugin p = pm.getPlugin("Residence");
+			if (p != null) {
+				Residence = (Residence) p;
+				// Display Hook message
+				getServer().getLogger().info(
+						"[Residence] Hooked into BorderVisualizer!");
 			}
 		} catch (Exception ex) {
 		}

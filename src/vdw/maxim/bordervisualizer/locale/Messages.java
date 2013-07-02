@@ -82,6 +82,8 @@ public class Messages {
 			"&a/bv region <regionname> &f- Show the borders of a region\n" +
 			"&a/bv regios <regionname> &f- Show the borders of a region\n" +
 			"&a/bv griefprevention &f- Show the borders of this claim\n" +
+			"&a/bv warzone <warzone> &f- Show the borders of a warzone\n" +
+			"&a/bv residence <residence> &f- Show the borders of a residence\n" +
 			"&c/bv admin &f- Administrator commands";
 	public static String help_admin=
 			"&c/bv reload &f- Reload the plugin configuration\n" + 

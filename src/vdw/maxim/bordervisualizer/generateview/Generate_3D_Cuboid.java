@@ -49,13 +49,19 @@ public class Generate_3D_Cuboid {
 		int x_distance = Math.abs((int) player.getLocation().getX() - x);
 		int z_distance = Math.abs((int) player.getLocation().getZ() - z);
 
+		// Check BlockCount
+		int blockFaceX = x_size * y_size;
+		int blockFaceZ = z_size * y_size;
+		int blockFaceY = x_size * z_size;
+		int blockCount = (blockFaceX*2) + (blockFaceZ*2) + (blockFaceY*2);
+
 		/* DEBUG LOGGING */
 		if (Config.debugMode == true) {
 			SendConsole.info("Distance X: " + x_distance);
 			SendConsole.info("Distance Z: " + z_distance);
 		}
 
-		if (x_distance < 100+x_size || z_distance < 100+z_size){
+		if (x_distance < 100+x_size || z_distance < 100+z_size && blockCount < 20000){
 			// Run the render on a diffrent thread
 			plugin.getServer().getScheduler()
 					.runTaskAsynchronously(plugin, new Runnable() {

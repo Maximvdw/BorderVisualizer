@@ -37,6 +37,7 @@ public class Generate_2D_SquareWand {
 			final int z, int size_sides, final int height,
 			final Material block, final boolean[] ignore_sides) {
 		final List<Location> glassified = new ArrayList<Location>();
+		@SuppressWarnings("unchecked")
 		final List<Location> glassifiedPrev = (List<Location>) dataGlassified
 				.getData(dataPlayers.getIndex(player));
 		// Decrease size with one

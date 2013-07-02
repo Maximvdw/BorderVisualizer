@@ -22,15 +22,17 @@ import vdw.maxim.bordervisualizer.configuration.Config;
 import vdw.maxim.bordervisualizer.datastore.dataGlassified;
 import vdw.maxim.bordervisualizer.datastore.dataPlayers;
 import vdw.maxim.bordervisualizer.userinterface.SendConsole;
+import vdw.maxim.bordervisualizer.userinterface.SendGame;
 
-public class Generate_3D_CuboidWand {
+public class Generate_2D_RectangleWand {
 	/* Get the plugin information from the main class */
 	public BorderVisualizer plugin;
 
-	public Generate_3D_CuboidWand(BorderVisualizer plugin) {
+	public Generate_2D_RectangleWand(BorderVisualizer plugin) {
 		this.plugin = plugin;
 	}
 
+	/* Generate Walls of Matterials */
 	public void generate(final Player player, final int x, final int y,
 			final int z, final int x_size, final int y_size, final int z_size,
 			final Material block, boolean[] ignore) {
@@ -70,8 +72,6 @@ public class Generate_3D_CuboidWand {
 		Location corner2;
 		Location corner3;
 		Location corner4;
-		Location corner5;
-		Location corner6;
 
 		// Player location
 		Location plLoc = player.getLocation();
@@ -129,26 +129,9 @@ public class Generate_3D_CuboidWand {
 				}
 			}
 		}
-		for (i = 0; i <= x_size; i++) {
-			for (k = 0; k <= z_size; k++) {
-				corner5 = new Location(world, x + i, y, z + k);
-				corner6 = new Location(world, x + i, y + y_size, z + k);
-				if (plLoc.distance(corner5) < 5) {
-					if (corner5.getBlock().getType() == Material.AIR) {
-						player.sendBlockChange(corner5, block, (byte) 0);
-						glassified.add(corner5);
-					}
-				}
-				if (plLoc.distance(corner6) < 5) {
-					if (corner6.getBlock().getType() == Material.AIR) {
-						player.sendBlockChange(corner6, block, (byte) 0);
-						glassified.add(corner6);
-					}
-				}
-			}
-		}
-		
+
 		// Save glassified
 		dataGlassified.data.set(dataPlayers.getIndex(player), glassified);
+
 	}
 }

@@ -1,9 +1,9 @@
 name: BorderVisualizer
 main: vdw.maxim.bordervisualizer.BorderVisualizer
-version: '1.0.4b'
+version: '1.0.6'
 website: http://dev.bukkit.org/bukkit-mods/BorderVisualizer/
 author: Maximvdw
-description: Visualize borders of Towny,WorldGuard or chunks
+description: Visualize borders of your favorite plugins
 load: POSTWORLD
 database: false
 commands:
@@ -20,6 +20,8 @@ commands:
         /<command> region - Visualize region
         /<command> regios - Visualize regios region
         /<command> griefprevention - Visualize GP claim
+        /<command> warzone - Visualize War zone
+        /<command> residence - Visualize Residence
 permissions:
     bordervisualizer.administrator:
         description: Give administrator privileges
@@ -37,6 +39,7 @@ permissions:
             bordervisualizer.regios.region: true
             bordervisualizer.towny.town: true
             bordervisualizer.factions.faction: true
+            bordervisualizer.war.zone: true
     bordervisualizer.user:
         description: Give user privileges
         default: true
@@ -47,6 +50,7 @@ permissions:
             bordervisualizer.chunk: true
             bordervisualizer.about: true
             bordervisualizer.help: true
+            bordervisualizer.residence: true
     bordervisualizer.help:
         description: See plugin help
         default: true
@@ -88,4 +92,10 @@ permissions:
         default: false
     bordervisualizer.regios.region:
         description: Visualize [Regios Region]
+        default: false
+    bordervisualizer.war.zone:
+        description: Visualize [War Zone]
+        default: false
+    bordervisualizer.residence:
+        description: Visualize [Residence]
         default: false

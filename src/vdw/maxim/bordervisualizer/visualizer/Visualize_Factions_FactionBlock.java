@@ -9,11 +9,6 @@
 
 package vdw.maxim.bordervisualizer.visualizer;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
-
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -27,8 +22,6 @@ import vdw.maxim.bordervisualizer.userinterface.SendGame;
 
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.FactionColl;
-import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.mcore.ps.PS;
 
 public class Visualize_Factions_FactionBlock {
@@ -49,10 +42,6 @@ public class Visualize_Factions_FactionBlock {
 
 		// Save the player's location
 		Location location = player.getLocation();
-
-		// Get all factions
-		FactionColl fc = FactionColls.get().get(
-				plugin.getServer().getConsoleSender());
 
 		// Get the faction
 		Faction f = null;

@@ -20,6 +20,7 @@ import vdw.maxim.bordervisualizer.datastore.LoadData;
 import vdw.maxim.bordervisualizer.datastore.ResetData;
 import vdw.maxim.bordervisualizer.generateview.Generate_2D_Rectangle;
 import vdw.maxim.bordervisualizer.generateview.Generate_2D_RectangleFrame;
+import vdw.maxim.bordervisualizer.generateview.Generate_2D_RectangleWand;
 import vdw.maxim.bordervisualizer.generateview.Generate_2D_Square;
 import vdw.maxim.bordervisualizer.generateview.Generate_2D_SquareFrame;
 import vdw.maxim.bordervisualizer.generateview.Generate_2D_SquareWand;
@@ -179,6 +180,13 @@ public class Visualize {
 				generator.generate(player, xMin, ystart, zMin,
 						Math.abs(xMax - xMin), height, Math.abs(zMax - zMin),
 						block, null);
+			} else if (viewType == ViewTypes.VIEW_GLASS_WAND) {
+				// Generate the 2D Rectangle Frame
+				Generate_2D_RectangleWand generator = new Generate_2D_RectangleWand(
+						plugin);
+				generator.generate(player, xMin, ystart, zMin,
+						Math.abs(xMax - xMin), height, Math.abs(zMax - zMin),
+						block, null);
 			}
 		}
 		
@@ -326,6 +334,13 @@ public class Visualize {
 			} else if (viewType == ViewTypes.VIEW_GLASS_FRAME) {
 				// Generate the 2D Rectangle Frame
 				Generate_2D_RectangleFrame generator = new Generate_2D_RectangleFrame(
+						plugin);
+				generator.generate(player, xMin, ystart, zMin,
+						Math.abs(xMax - xMin), height, Math.abs(zMax - zMin),
+						block, null);
+			} else if (viewType == ViewTypes.VIEW_GLASS_WAND) {
+				// Generate the 2D Rectangle Frame
+				Generate_2D_RectangleWand generator = new Generate_2D_RectangleWand(
 						plugin);
 				generator.generate(player, xMin, ystart, zMin,
 						Math.abs(xMax - xMin), height, Math.abs(zMax - zMin),
